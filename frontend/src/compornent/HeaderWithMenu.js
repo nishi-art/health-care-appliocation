@@ -17,7 +17,10 @@ const HeaderWithMenu = () => {
                 <li onClick={() => SetactiveMenuCompornent('health-care')}>健康管理</li>
                 <li onClick={() => SetactiveMenuCompornent('question-to-AI')}>AIへの質問</li>
             </ul>
-            <button className='rogin-button'>ログイン</button>
+            <div className='user-management'>
+                <button className='btn'>ログイン</button>
+                <button className='btn'>新規登録</button>
+            </div>
         </div>
         {activeMenuCompornent === 'health-care' ?? <HealthCare />}
         {activeMenuCompornent === 'question-to-AI' ?? <QuestionToAI />}

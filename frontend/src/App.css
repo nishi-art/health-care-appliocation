@@ -28,18 +28,22 @@ body {
             opacity: 0.5;
         }
     }
-    .rogin-button {
+    .user-management {
         position: absolute;
         top: 9px;
         right: 30px;
+        display: flex;
+        gap: 10px;
+        .btn {
         padding: 5px;
         border-radius: 10px;
         background-color: rgba(0, 0, 0, 0);
         border-color: #ffe2e0;
         color: #ffe2e0;
-    }
-    .rogin-button:hover {
+        }
+        .btn:hover {
         opacity: 0.7;
         cursor: pointer;
+        }
     }
 }
