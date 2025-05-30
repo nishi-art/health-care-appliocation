@@ -7,3 +7,8 @@ router = APIRouter(prefix="/users")
 async def login_user():
     print("ログインAPIが呼び出されました")
     return {"message": "ログインしました"}
+
+@router.post("/registration")
+async def registration_user():
+    print("登録APIが呼び出されました")
+    return {"message": "登録しました"}

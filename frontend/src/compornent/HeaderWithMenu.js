@@ -2,34 +2,23 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import HealthCare from './HealthCare';
 import QuestionToAI from './QuestionToAI';
+import Login from './Login';
+import NewRegistration from './NewRegistration';
 
 const HeaderWithMenu = () => {
     const [activeMenuCompornent, SetactiveMenuCompornent] = useState(() => 
         JSON.parse(localStorage.getItem('activeMenuCompornent')) || '' );
+    const [visibleLogin, setVisibleLogin] = useState(() => 
+        JSON.parse(localStorage.getItem('visibleLogin')) || false);
+    const [visibleNewRegistration, setVisibleNewRegistration] = useState(() => 
+        JSON.parse(localStorage.getItem('visibleNewRegistration')) || false);
+
     useEffect(() => {
         localStorage.setItem('activeMenuCompornent', JSON.stringify(activeMenuCompornent));
-    }, [activeMenuCompornent]);
+        localStorage.setItem('visibleLogin', JSON.stringify(visibleLogin));
+        localStorage.setItem('visibleNewRegistration', JSON.stringify(visibleNewRegistration));
+    }, [activeMenuCompornent, visibleLogin, visibleNewRegistration]);
 
-    const handleLogin = async() => {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/users/login', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'}, //リクエストボディがJSON形式であることを指定
-                body: JSON.stringify({/*まだ空だがここにユーザー情報など*/})
-            });
-            if(!response.ok) {
-                const errorData = await response.json();
-                //バックエンドは{"detail": "ユーザー名が..."}のように詳細なエラーメッセージをJSON形式で返してくるのでそのオブジェクトを指定している
-                throw new Error(errorData.detail || `HTTPエラー: ${response.status}`)
-            }
-            const loginData = await response.json() //.json()がPromiseを返すため非同期処理にする
-            console.log(`APIレスポンス:${loginData.message}`)
-        } catch (error) {
-            error instanceof TypeError ? 
-                alert('ネットワーク関連のエラーです') : 
-                alert(`エラー:${error.message}`)
-        }
-    }
     return (
     <>
         <div className='header-with-menu'>
@@ -39,12 +28,14 @@ const HeaderWithMenu = () => {
                 <li onClick={() => SetactiveMenuCompornent('question-to-AI')}>AIへの質問</li>
             </ul>
             <div className='user-management'>
-                <button className='btn' onClick={handleLogin}>ログイン</button>
-                <button className='btn'>新規登録</button>
+                <button className='btn' onClick={() => {setVisibleLogin(true);setVisibleNewRegistration(false);}}>ログイン</button>
+                <button className='btn' onClick={() => {setVisibleNewRegistration(true);setVisibleLogin(false);}}>新規登録</button>
             </div>
         </div>
         {activeMenuCompornent === 'health-care' ?? <HealthCare />}
         {activeMenuCompornent === 'question-to-AI' ?? <QuestionToAI />}
+        {visibleLogin && <Login />}
+        {visibleNewRegistration && <NewRegistration />}
     </>
     )
 }

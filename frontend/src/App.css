@@ -47,3 +47,60 @@ body {
         }
     }
 }
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    padding-top: 30px;
+    width: 300px;
+    height: 250px;
+    border: 2px solid #fa9f98;
+    border-radius: 20px;
+    .mail {
+        display: flex;
+        flex-direction: column;
+        input {
+            width: 250px;
+        }
+    }
+    .password {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+        input {
+            width: 250px;
+        }
+    }
+    .forgot-password {
+        font-size: 12px;
+        width: 100%;
+        text-align: end;
+    }
+    .submit-btn {
+        width: 100px;
+        height: 30px;
+        display: block;
+        margin: 40px auto 0;
+        background-color: #fa9f98;
+        border: 1px solid #000;
+        border-radius: 5px;
+    }
+    .submit-btn:hover {
+        cursor: pointer;
+        opacity: 0.8;
+    }
+    .submit-btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.8;
+    }
+    .eye-img {
+        width: 20px;
+        position: absolute;
+        top: 225px;
+        left: 490px;
+    }
+    .eye-img:hover {
+        cursor: pointer;
+    }
+}
