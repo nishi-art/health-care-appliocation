@@ -1,5 +1,5 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
+from fastapi import APIRouter   #ルーターのインスタンスを作成するため
+from pydantic import BaseModel   #BaseModelクラスの機能を継承するため
 
 class userRegistration(BaseModel):
     email: str
