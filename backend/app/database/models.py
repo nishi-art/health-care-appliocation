@@ -10,8 +10,8 @@ class User(Base):
     email: Mapped[str] = mapped_column(unique=True, index=True)
     hashed_password: Mapped[str]
     create_at: Mapped[datetime] = mapped_column(
-        server_default=func.now(), timezorn=True
+        server_default=func.now(), timezone=True
     )
     updated_at = Mapped[datetime] = mapped_column(
-        onupdate=func.now(), timezorn=True
+        onupdate=func.now(), timezone=True
     )
