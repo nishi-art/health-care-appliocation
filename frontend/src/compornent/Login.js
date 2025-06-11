@@ -29,9 +29,15 @@ const Login = () => {
             const loginData = await response.json() //.json()がPromiseを返すため非同期処理にする
             console.log(`APIレスポンス:${loginData.message}`)
         } catch (error) {
-            error instanceof TypeError ? 
+            if(error.message === 'メールアドレスまたはパスワードが正しくありません') {
+                const visibility = document.querySelector('.error-message-login');
+                visibility.classList.remove('hidden')
+            }
+            else {
+                error instanceof TypeError ? 
                 alert('ネットワーク関連のエラーです') : 
                 alert(`エラー:${error.message}`)
+            }
         } finally {
             setIsLoading(false);
         }
@@ -50,6 +56,9 @@ const Login = () => {
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     handleLogin();}}>
+                    <div className='error-message hidden error-message-login'>
+                        <p>※メールアドレスまたはパスワードが間違っています</p>
+                    </div>
                     <div className='mail'>
                         <label htmlFor="email">メールアドレス</label>
                         <input type="email" id='email' name='email' onChange={handleInputChange} />
@@ -61,7 +70,7 @@ const Login = () => {
                     <a className='forgot-password' href='https://www.deepl.com/ja/translator'>パスワードをお忘れの方</a>
                     <input className='submit-btn' type="submit" value={isLoading ? "ログイン中..." : "ログイン"} disabled={isLoading} />
                 </form>
-                <img className='eye-img' src={showPassword ? eyeClose : eyeOpen} 
+                <img className='eye-img-login' src={showPassword ? eyeClose : eyeOpen} 
                     onClick={() => showPassword ? setShowPassword(false) : setShowPassword(true)} 
                     alt="eye-image" />
             </div>

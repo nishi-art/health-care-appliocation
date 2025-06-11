@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine   # SQLAlchemyでデータベース接続を確立するための関数create_engineを使うため
 from sqlalchemy.orm import DeclarativeBase   # SQLAlchemyのORMモデルを作成するための基底クラスを生成する関数を使うため
 from sqlalchemy.orm import sessionmaker   # データベースセッションを作成するためのファクトリクラス
+from . import models
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
 
@@ -14,6 +15,10 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 class Base(DeclarativeBase):
     pass
+
+def init_db():
+    Base.metadata.create_all(bind=engine)
+    print("データベース初期化完了")
 
 def get_db():
     db = SessionLocal()  # セッションの開始

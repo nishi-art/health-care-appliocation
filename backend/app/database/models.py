@@ -9,9 +9,10 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     email: Mapped[str] = mapped_column(unique=True, index=True)
     hashed_password: Mapped[str]
-    create_at: Mapped[datetime] = mapped_column(
-        server_default=func.now(), timezone=True
-    )
-    updated_at = Mapped[datetime] = mapped_column(
-        onupdate=func.now(), timezone=True
-    )
+    created_at: Mapped[datetime] = mapped_column(
+        server_default=func.now()
+    )  # SQLiteを使っているのでtimezone=Trueは削除
+    updated_at: Mapped[datetime] = mapped_column(
+        server_default=func.now(),
+        onupdate=func.now()
+    ) # 同じ

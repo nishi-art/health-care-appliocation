@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import eyeOpen from '../asset/eye-open.png';
 import eyeClose from '../asset/eye-close.png';
 
-const NewRegistration = () => {
+const NewRegistration = ({setIsRegistered}) => {
     const [showPassword, setShowPassword] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -26,11 +26,18 @@ const NewRegistration = () => {
                 throw new Error(errorData.detail || `HTTPエラー: ${response.status}`)
             }
             const registrationData = await response.json();
-            console.log(`APIレスポンス:${registrationData.message}`);
+            console.log('APIレスポンス:', registrationData);
+            setIsRegistered(true);
         } catch(error) {
-            error instanceof TypeError ? 
+            if(error.message === 'このメールアドレスは既に使用されています') {
+                const visibility = document.querySelector('.error-message-registration');
+                visibility.classList.remove('hidden')
+            }
+            else {
+                error instanceof TypeError ? 
                 alert('ネットワーク関連のエラーです') : 
                 alert(`${error.name}:${error.message}`)
+            }
         } finally {
             setIsLoading(false);
         }
@@ -49,6 +56,9 @@ const NewRegistration = () => {
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     handleRegistration();}}>
+                    <div className='error-message hidden error-message-registration'>
+                        <p>※このメールアドレスは既に使用されています</p>
+                    </div>
                     <div className='mail'>
                         <label htmlFor="email">メールアドレス</label>
                         <input type="email" id='email' name='email' onChange={handleInputChange} />
@@ -59,7 +69,7 @@ const NewRegistration = () => {
                     </div>
                     <input className='submit-btn' type="submit" value={isLoading ? "登録中..." : "新規登録"} disabled={isLoading} />
                 </form>
-                <img className='eye-img' src={showPassword ? eyeClose : eyeOpen} 
+                <img className='eye-img-registration' src={showPassword ? eyeClose : eyeOpen} 
                     onClick={() => showPassword ? setShowPassword(false) : setShowPassword(true)} 
                     alt="eye-image" />
             </div>

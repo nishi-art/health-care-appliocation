@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.routers import users
 from fastapi.middleware.cors import CORSMiddleware
+from app.database.database import init_db
 
 app = FastAPI()
 
@@ -16,3 +17,7 @@ app.add_middleware(
 
 # users.routerをメインのインスタンス(app)に組み込む
 app.include_router(users.router)
+
+@app.on_event("startup")
+async def on_startup():
+    init_db() # データベースの初期化（テーブルが存在しない場合のみ作成）
