@@ -26,21 +26,27 @@ const HeaderWithMenu = () => {
     <>
         <div className='header-with-menu'>
             <h1 className='header'>Pet Health Care</h1>
-            <div className='user-management'>
-                <button className='btn' onClick={() => {setVisibleLogin(true);setVisibleNewRegistration(false);}}>ログイン</button>
-                <button className='btn' onClick={() => {setVisibleNewRegistration(true);setVisibleLogin(false);}}>新規登録</button>
-            </div>
-            {
-            isRegistered && 
+            {!isRegistered && 
+                <div className='user-management'>
+                    <button className='btn' onClick={() => {setVisibleLogin(true);setVisibleNewRegistration(false);}}>ログイン</button>
+                    <button className='btn' onClick={() => {setVisibleNewRegistration(true);setVisibleLogin(false);}}>新規登録</button>
+                </div>
+            }
+            {isRegistered &&
                 <Menu 
                 activeMenuCompornent={activeMenuCompornent} 
-                SetactiveMenuCompornent={SetactiveMenuCompornent}/>
+                SetactiveMenuCompornent={SetactiveMenuCompornent}
+                />
+            }
+            {!isRegistered && visibleLogin && 
+                <Login setIsRegistered={setIsRegistered} />
+            }
+            {!isRegistered && visibleNewRegistration && 
+                <NewRegistration setIsRegistered={setIsRegistered} />
             }
         </div>
         {activeMenuCompornent === 'health-care' ?? <HealthCare />}
         {activeMenuCompornent === 'question-to-AI' ?? <QuestionToAI />}
-        {visibleLogin && <Login />}
-        {visibleNewRegistration && <NewRegistration setIsRegistered={setIsRegistered} />}
     </>
     )
 }

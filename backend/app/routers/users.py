@@ -2,19 +2,10 @@ from fastapi import APIRouter   #ルーターのインスタンスを作成す�
 from pydantic import BaseModel   #BaseModelクラスの機能を継承するため
 from ..database import crud, schemas
 from ..database.database import get_db
+from ..auth .passwordService import verify_password
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from fastapi import HTTPException
-
-'''
-class userRegistration(BaseModel):
-    email: str
-    password: str
-
-class userLogin(BaseModel):
-    email: str
-    password: str
-'''
 
 # ルータのインスタンスを作成
 router = APIRouter(prefix="/users")
@@ -43,7 +34,7 @@ async def login_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
             detail="メールアドレスまたはパスワードが正しくありません"
         )
     # パスワードの検証
-    if not crud.verify_password(plain_password=user.password, hashed_password=db_user.hashed_password):
+    if not verify_password(plain_password=user.password, hashed_password=db_user.hashed_password):
         raise HTTPException(
             status_code=401,
             detail="メールアドレスまたはパスワードが正しくありません"

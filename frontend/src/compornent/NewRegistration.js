@@ -9,6 +9,7 @@ const NewRegistration = ({setIsRegistered}) => {
         email: '',
         password: '',
     });
+    const [visibleErrorText, setVisibleErrorText] = useState(false);
 
     const handleRegistration = async() => {
         setIsLoading(true);
@@ -30,8 +31,7 @@ const NewRegistration = ({setIsRegistered}) => {
             setIsRegistered(true);
         } catch(error) {
             if(error.message === 'このメールアドレスは既に使用されています') {
-                const visibility = document.querySelector('.error-message-registration');
-                visibility.classList.remove('hidden')
+                setVisibleErrorText(true);
             }
             else {
                 error instanceof TypeError ? 
@@ -56,9 +56,11 @@ const NewRegistration = ({setIsRegistered}) => {
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     handleRegistration();}}>
-                    <div className='error-message hidden error-message-registration'>
-                        <p>※このメールアドレスは既に使用されています</p>
-                    </div>
+                    {visibleErrorText && 
+                        <div className='error-message'>
+                            <p>※このメールアドレスは既に使用されています</p>
+                        </div>
+                    }
                     <div className='mail'>
                         <label htmlFor="email">メールアドレス</label>
                         <input type="email" id='email' name='email' onChange={handleInputChange} />

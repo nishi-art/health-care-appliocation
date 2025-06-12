@@ -62,12 +62,10 @@ body {
         font-size: 10px;
         color: red;
     }
-    .hidden {
-        visibility: hidden;
-    }
     .mail {
         display: flex;
         flex-direction: column;
+        margin-top: 10px;
         input {
             width: 250px;
         }

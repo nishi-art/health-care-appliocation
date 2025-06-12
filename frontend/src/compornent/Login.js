@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import eyeOpen from '../asset/eye-open.png'
 import eyeClose from '../asset/eye-close.png'
 
-const Login = () => {
+const Login = ({setIsRegistered}) => {
     const [showPassword, setShowPassword] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
+    const [visibleErrorText, setVisibleErrorText] = useState(false);
 
     const handleLogin = async() => {
         setIsLoading(true);
@@ -26,12 +27,12 @@ const Login = () => {
                 //バックエンドは{"detail": "ユーザー名が..."}のように詳細なエラーメッセージをJSON形式で返してくるのでそのオブジェクトを指定している
                 throw new Error(errorData.detail || `HTTPエラー: ${response.status}`)
             }
-            const loginData = await response.json() //.json()がPromiseを返すため非同期処理にする
-            console.log(`APIレスポンス:${loginData.message}`)
+            const loginData = await response.json(); //.json()がPromiseを返すため非同期処理にする
+            console.log(`APIレスポンス:${loginData.message}`);
+            setIsRegistered(true);
         } catch (error) {
             if(error.message === 'メールアドレスまたはパスワードが正しくありません') {
-                const visibility = document.querySelector('.error-message-login');
-                visibility.classList.remove('hidden')
+                setVisibleErrorText(true);
             }
             else {
                 error instanceof TypeError ? 
@@ -56,9 +57,11 @@ const Login = () => {
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     handleLogin();}}>
-                    <div className='error-message hidden error-message-login'>
-                        <p>※メールアドレスまたはパスワードが間違っています</p>
-                    </div>
+                    {visibleErrorText && 
+                        <div className='error-message'>
+                            <p>※メールアドレスまたはパスワードが間違っています</p>
+                        </div>
+                    }
                     <div className='mail'>
                         <label htmlFor="email">メールアドレス</label>
                         <input type="email" id='email' name='email' onChange={handleInputChange} />
