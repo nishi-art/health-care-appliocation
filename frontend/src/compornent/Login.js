@@ -30,6 +30,22 @@ const Login = ({setIsRegistered}) => {
             const loginData = await response.json(); //.json()がPromiseを返すため非同期処理にする
             console.log(`APIレスポンス:${loginData.message}`);
             setIsRegistered(true);
+
+            //トークンをローカルストレージに保存
+            localStorage.setItem('token', loginData.access_token);
+
+            //認証済みユーザー情報の取得
+            const userResponse = await fetch('http://127.0.0.1:8000/users/me', {
+                headers: {
+                    'Authorization': `Bearer ${loginData.access_token}`,
+                }
+            });
+            if(!userResponse.ok) {
+                throw new Error('ユーザー情報の取得に失敗しました');
+            }
+            const userData = await userResponse.json();
+            console.log('ユーザー情報', userData);
+            
         } catch (error) {
             if(error.message === 'メールアドレスまたはパスワードが正しくありません') {
                 setVisibleErrorText(true);

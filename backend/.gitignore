@@ -1,7 +1,7 @@
-# 仮想環境ディレクトリを無視
 /venv
-# 環境変数ファイルを無視
 .env
+__pycache__
+sql_app.db
 
 # Pythonのコンパイル済みファイルなど
 __pycache__/
