@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import eyeOpen from '../asset/eye-open.png'
 import eyeClose from '../asset/eye-close.png'
 
-const Login = ({setIsRegistered}) => {
+const Login = ({setIsAuthenticated}) => {
     const [showPassword, setShowPassword] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const Login = ({setIsRegistered}) => {
         password: '',
     });
     const [visibleErrorText, setVisibleErrorText] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogin = async() => {
         setIsLoading(true);
@@ -29,7 +31,6 @@ const Login = ({setIsRegistered}) => {
             }
             const loginData = await response.json(); //.json()がPromiseを返すため非同期処理にする
             console.log(`APIレスポンス:${loginData.message}`);
-            setIsRegistered(true);
 
             //トークンをローカルストレージに保存
             localStorage.setItem('token', loginData.access_token);
@@ -45,7 +46,8 @@ const Login = ({setIsRegistered}) => {
             }
             const userData = await userResponse.json();
             console.log('ユーザー情報', userData);
-            
+            setIsAuthenticated(true);
+            navigate('/menu');
         } catch (error) {
             if(error.message === 'メールアドレスまたはパスワードが正しくありません') {
                 setVisibleErrorText(true);
