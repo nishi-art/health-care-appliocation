@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import eyeOpen from '../asset/eye-open.png';
 import eyeClose from '../asset/eye-close.png';
 
-const NewRegistration = ({setIsRegistered}) => {
+const NewRegistration = ({setIsAuthenticated}) => {
     const [showPassword, setShowPassword] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const NewRegistration = ({setIsRegistered}) => {
         password: '',
     });
     const [visibleErrorText, setVisibleErrorText] = useState(false);
+    const navigate = useNavigate();
 
     const handleRegistration = async() => {
         setIsLoading(true);
@@ -28,7 +30,8 @@ const NewRegistration = ({setIsRegistered}) => {
             }
             const registrationData = await response.json();
             console.log('APIレスポンス:', registrationData);
-            setIsRegistered(true);
+            setIsAuthenticated(true);
+            navigate('/menu');
         } catch(error) {
             if(error.message === 'このメールアドレスは既に使用されています') {
                 setVisibleErrorText(true);
