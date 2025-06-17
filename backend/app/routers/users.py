@@ -1,6 +1,7 @@
 from fastapi import APIRouter   #ルーターのインスタンスを作成するため
 from pydantic import BaseModel   #BaseModelクラスの機能を継承するため
-from ..database import crud, schemas
+from ..database import crud, schemas, models
+from ..auth.token import create_accecss_token, get_current_user
 from ..database.database import get_db
 from ..auth .passwordService import verify_password
 from sqlalchemy.orm import Session
@@ -39,9 +40,21 @@ async def login_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
             status_code=401,
             detail="メールアドレスまたはパスワードが正しくありません"
         )
+    # トークンの生成
+    access_token = create_accecss_token(data={"sub": user.email})
+    
     print("ログインAPIが呼び出されました")
     print(f"受け取ったデータ: email={user.email} password={user.password}")
-    return {"message": "ログインしました"}
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "message": "ログインしました"
+        }
+
+# 認証済みのユーザーの情報を返す
+@router.get("/me")
+async def read_users_me(current_user: models.User = Depends(get_current_user)):
+    return current_user
 
 
 '''
