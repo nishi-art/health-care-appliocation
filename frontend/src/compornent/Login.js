@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import eyeOpen from '../asset/eye-open.png'
 import eyeClose from '../asset/eye-close.png'
+import { fetchWithAuth } from '../utils/authRequest';
 
 const Login = ({setIsAuthenticated}) => {
     const [showPassword, setShowPassword] = useState(true);
@@ -36,11 +37,7 @@ const Login = ({setIsAuthenticated}) => {
             localStorage.setItem('token', loginData.access_token);
 
             //認証済みユーザー情報の取得
-            const userResponse = await fetch('http://127.0.0.1:8000/users/me', {
-                headers: {
-                    'Authorization': `Bearer ${loginData.access_token}`,
-                }
-            });
+            const userResponse = await fetchWithAuth('http://127.0.0.1:8000/users/me', navigate);
             if(!userResponse.ok) {
                 throw new Error('ユーザー情報の取得に失敗しました');
             }
