@@ -11,23 +11,6 @@ body {
         justify-content: center;
         background-color: #fa9f98;
     }
-    .menu {
-        margin-top: 10px;
-        margin-inline: 100px;
-        border-bottom: 1px solid #666666;
-        display: flex;
-        justify-content: center;
-        gap: 100px;
-        li {
-            list-style: none;
-            font-weight: bolder;
-            margin-bottom: 5px;
-        }
-        li:hover {
-            cursor: pointer;
-            opacity: 0.5;
-        }
-    }
     .user-management {
         position: absolute;
         top: 9px;
@@ -35,16 +18,50 @@ body {
         display: flex;
         gap: 10px;
         .btn {
-        padding: 5px;
-        border-radius: 10px;
-        background-color: rgba(0, 0, 0, 0);
-        border-color: #ffe2e0;
-        color: #ffe2e0;
+            padding: 5px;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0);
+            border-color: #ffe2e0;
+            color: #ffe2e0;
         }
         .btn:hover {
-        opacity: 0.7;
-        cursor: pointer;
+            opacity: 0.7;
+            cursor: pointer;
         }
+    }
+    .user-logout {
+        position: absolute;
+        top: 9px;
+        right: 30px;
+        display: flex;
+        .btn {
+            padding: 5px;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0);
+            border-color: #ffe2e0;
+            color: #ffe2e0;
+        }
+        .btn:hover {
+            opacity: 0.7;
+            cursor: pointer;
+        }
+    }
+}
+.menu {
+    margin-top: 10px;
+    margin-inline: 100px;
+    border-bottom: 1px solid #666666;
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    li {
+        list-style: none;
+        font-weight: bolder;
+        margin-bottom: 5px;
+    }
+    li:hover {
+        cursor: pointer;
+        opacity: 0.5;
     }
 }
 .form {
