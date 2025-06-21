@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
-import HeaderWithMenu from './compornent/HeaderWithMenu';
+import Header from './compornent/Header';
 import Menu from './compornent/Menu';
 import Login from './compornent/Login';
 import NewRegistration from './compornent/NewRegistration';
@@ -28,7 +28,7 @@ function App() {
                 <Route path='/' element={
                     isAuthenticated ? 
                         <Navigate to='/menu' /> :
-                        <HeaderWithMenu
+                        <Header
                          isAuthenticated={isAuthenticated}
                          handleRemoveToken={handleRemoveToken} 
                         />
@@ -37,7 +37,7 @@ function App() {
                     isAuthenticated ? 
                         <Navigate to='/' /> :
                         <>
-                            <HeaderWithMenu 
+                            <Header 
                             isAuthenticated={isAuthenticated}
                             handleRemoveToken={handleRemoveToken} 
                             />
@@ -48,7 +48,7 @@ function App() {
                     isAuthenticated ? 
                         <Navigate to='/' /> : 
                         <>
-                            <HeaderWithMenu 
+                            <Header 
                             isAuthenticated={isAuthenticated} 
                             handleRemoveToken={handleRemoveToken}
                             />
@@ -58,7 +58,7 @@ function App() {
                 <Route path='/menu' element={
                     isAuthenticated ? 
                         <>
-                            <HeaderWithMenu
+                            <Header
                              isAuthenticated={isAuthenticated}
                              handleRemoveToken={handleRemoveToken} 
                             />
@@ -69,10 +69,11 @@ function App() {
                 <Route path='healthcare' element={
                     isAuthenticated ? 
                         <>
-                            <HeaderWithMenu
+                            <Header
                              isAuthenticated={isAuthenticated}
                              handleRemoveToken={handleRemoveToken} 
                             />
+                            <Menu />
                             <HealthCare />
                         </> :
                         <Navigate to='/' />
@@ -80,10 +81,11 @@ function App() {
                 <Route path='/question' element={
                     isAuthenticated ? 
                         <>
-                            <HeaderWithMenu
+                            <Header
                              isAuthenticated={isAuthenticated}
                              handleRemoveToken={handleRemoveToken} 
                             />
+                            <Menu />
                             <QuestionToAI />
                         </> :
                         <Navigate to='/' />

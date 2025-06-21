@@ -134,3 +134,25 @@ body {
         cursor: pointer;
     }
 }
+.health-care {
+    margin-inline: 20px;
+    .select-year-month {
+        .select-year {
+            border-style: none none solid;
+            font-size: 16px;
+            margin-right: 15px;
+        }
+        .select-year:hover {
+            opacity: 0.7;
+            cursor: pointer;
+        }
+        .select-month {
+            border-style: none none solid;
+            font-size: 16px;
+        }
+        .select-month:hover {
+            opacity: 0.7;
+            cursor: pointer;
+        }
+    }
+}
