@@ -8,6 +8,7 @@ import NewRegistration from './compornent/NewRegistration';
 import HealthCare from './compornent/HealthCare';
 import QuestionToAI from './compornent/QuestionToAI';
 import { checkAuthStatus } from './utils/auth';
+import MemoPaper from './compornent/MemoPaper';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -90,6 +91,19 @@ function App() {
                         </> :
                         <Navigate to='/' />
                 } />
+                <Route path='/healthcare/:year/:month/:day' element={
+                    isAuthenticated ? 
+                        <>
+                            <Header
+                             isAuthenticated={isAuthenticated} 
+                             handleRemoveToken={handleRemoveToken}
+                            />
+                            <MemoPaper />
+                        </> :
+                        <Navigate to='/' />
+                }>
+
+                </Route>
             </Routes>
         </BrowserRouter>
     );
