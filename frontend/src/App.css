@@ -135,7 +135,7 @@ body {
     }
 }
 .health-care {
-    margin-inline: 20px;
+    margin-inline: 25px;
     .select-year-month {
         .select-year {
             border-style: none none solid;
@@ -155,4 +155,50 @@ body {
             cursor: pointer;
         }
     }
+    .calender {
+        margin-top: 30px;
+        padding: 5px;
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 2px;
+        border: 1px solid #000;
+        .day {
+            height: 100px;
+            border: 1px solid #000;
+        }
+        .day:hover {
+            opacity: 0.5;
+            cursor: pointer;
+        }
+        .saturday {
+            background-color: rgba(5, 38, 252, 0.1);
+        }
+        .sunday {
+            background-color: rgba(252, 5, 5, 0.2);
+        }
+    }
+}
+.back-calender {
+    display: inline-block;
+    margin-top: 20px;
+    color: #fa9f98;
+    border-bottom: 1px solid #fa9f98;
+    margin-left: 20px;
+}
+.back-calender:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+.current-date {
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-family: serif;
+}
+.memo-paper {
+    margin-top: 5px;
+    margin-inline: 20px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 20px;
 }
