@@ -1,5 +1,6 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
+from sqlalchemy import ForeignKey
 from datetime import datetime
 from .database import Base
 
@@ -15,4 +16,19 @@ class User(Base):
     updated_at: Mapped[datetime] = mapped_column(
         server_default=func.now(),
         onupdate=func.now()
-    ) # 同じ
+    ) # 同じ理由でtimezone=Trueは削除
+    memos: Mapped[list["Memo"]] = relationship("Memo", back_populates="user")
+
+class Memo(Base):
+    __tablename__ = "memos"
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), index=True)
+    year: Mapped[int]
+    month: Mapped[int]
+    day: Mapped[int]
+    meal: Mapped[str]
+    exercise: Mapped[str]
+    hospital: Mapped[str]
+    other: Mapped[str]
+    user: Mapped[list["User"]] = relationship("User", back_populates="memos")

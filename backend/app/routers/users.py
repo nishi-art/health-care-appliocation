@@ -11,6 +11,7 @@ from fastapi import HTTPException
 # ルータのインスタンスを作成
 router = APIRouter(prefix="/users")
 
+# ユーザー登録
 @router.post("/registration", response_model=schemas.UserResponse)  # ハッシュ化されたパスワードなどを除外してJSON形式でレスポンスを返す
 async def registration_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     # 重複チェック
@@ -25,6 +26,7 @@ async def registration_user(user: schemas.UserCreate, db: Session = Depends(get_
     # ユーザー作成
     return crud.create_user(db=db, user=user)
 
+# ユーザーログイン
 @router.post("/login")
 async def login_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     # ユーザー情報の取得
@@ -55,6 +57,19 @@ async def login_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 @router.get("/me")
 async def read_users_me(current_user: models.User = Depends(get_current_user)):
     return current_user
+
+# カレンダーのデータ取得
+@router.get("/healthcare/get", response_model=schemas.MemoResponse)
+async def get_calender_data(
+    year: int, 
+    month: int, 
+    day: int, 
+    db: Session = Depends(get_db),
+    
+):
+
+
+# カレンダーのデータ保存
 
 
 '''
