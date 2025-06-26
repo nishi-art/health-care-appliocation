@@ -18,7 +18,7 @@ const Login = ({setIsAuthenticated}) => {
         setIsLoading(true);
         try {
             if(formData.email === '' || formData.password === '') {
-                throw new Error("メールアドレスとパスワード両方を入力してください");
+                throw new Error('メールアドレスとパスワード両方を入力してください');
             }
             const response = await fetch('http://127.0.0.1:8000/users/login', {
                 method: 'POST',
