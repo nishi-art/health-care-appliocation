@@ -65,11 +65,32 @@ async def get_calender_data(
     month: int, 
     day: int, 
     db: Session = Depends(get_db),
-    
+    current_user: models.User = Depends(get_current_user),
 ):
-
+    memo = crud.get_user_memo(db, current_user.id, year, month, day)
+    if memo:
+        return memo
+    # データがない場合は空のレスポンス
+    return {
+        "id": 0,
+        "year": year,
+        "month": month,
+        "day": day,
+        "meal": "",
+        "exercse": "",
+        "hospital": "",
+        "other": "",
+    }
 
 # カレンダーのデータ保存
+@router.post("/healthcare/save", response_model=schemas.MemoResponse)
+async def save_calender_data(
+    memo: schemas.MemoCreate,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
+    db_memo = crud.create_or_update_memo(db, current_user.id, memo)
+    return db_memo
 
 
 '''

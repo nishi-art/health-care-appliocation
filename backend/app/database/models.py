@@ -17,7 +17,7 @@ class User(Base):
         server_default=func.now(),
         onupdate=func.now()
     ) # 同じ理由でtimezone=Trueは削除
-    memos: Mapped[list["Memo"]] = relationship("Memo", back_populates="user")
+    memos: Mapped["Memo"] = relationship("Memo", back_populates="user")
 
 class Memo(Base):
     __tablename__ = "memos"
@@ -27,8 +27,8 @@ class Memo(Base):
     year: Mapped[int]
     month: Mapped[int]
     day: Mapped[int]
-    meal: Mapped[str]
-    exercise: Mapped[str]
-    hospital: Mapped[str]
-    other: Mapped[str]
-    user: Mapped[list["User"]] = relationship("User", back_populates="memos")
+    meal: Mapped[str] = mapped_column(default="", nullable=False)
+    exercise: Mapped[str] = mapped_column(default="", nullable=False)
+    hospital: Mapped[str] = mapped_column(default="", nullable=False)
+    other: Mapped[str] = mapped_column(default="", nullable=False)
+    user: Mapped["User"] = relationship("User", back_populates="memos")

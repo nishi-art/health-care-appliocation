@@ -202,3 +202,20 @@ body {
     border: 1px solid #000;
     border-radius: 20px;
 }
+.save-btn {
+    text-align: center;
+    button {
+        margin-top: 20px;
+        width: 100px;
+        height: 40px;
+        padding: 5px;
+        border-radius: 10px;
+        background-color: #fa9f98;
+        border-color: #ffe2e0;
+        color: #fff;
+    }
+    button:hover {
+        opacity: 0.7;
+        cursor: pointer;
+    }
+}
