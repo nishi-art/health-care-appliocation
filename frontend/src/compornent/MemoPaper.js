@@ -9,10 +9,13 @@ function MemoPaper() {
     const [exercise, setExercise] = useState('');
     const [hospital, setHospital] = useState('');
     const [other, setOther] = useState('');
+    const token = localStorage.getItem('token');
 
     const fetchMemo = async() => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/users/healthcare/get');
+            const response = await fetch(`http://127.0.0.1:8000/users/healthcare/get?year=${year}&month=${month}&day=${day}`, {
+                headers: {'Authorization': `Bearer ${token}`}
+            });
             if(!response.ok) throw new Error('データの取得に失敗しました。');
             const data = await response.json();
             setMeal(data.meal || '');
@@ -23,15 +26,21 @@ function MemoPaper() {
             alert(error.message);
         }
     };
+
     const handleSave = async() => {
         try {
             const response = await fetch('http://127.0.0.1:8000/users/healthcare/save', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({
-                    year, month, day,
+                    year: Number(year),
+                    month: Number(month), 
+                    day: Number(day),
                     meal, exercise, hospital, other,
-                })
+                }),
             });
             if (!response.ok) throw new Error('保存に失敗しました。');
         } catch (error) {
@@ -40,7 +49,7 @@ function MemoPaper() {
 
     }
     useEffect(() => {
-        //fetchMemo();
+        fetchMemo();
     }, [year, month, day]);
 
     return (
@@ -64,6 +73,9 @@ function MemoPaper() {
                     <p>＜その他＞</p>
                     <textarea value={other} onChange={(e) => setOther(e.target.value)}></textarea>
                 </div>
+            </div>
+            <div className='save-btn'>
+                <button onClick={handleSave}>保存</button>
             </div>
         </>
     )
