@@ -13,7 +13,9 @@ const HealthCare = () => {
         JSON.parse(localStorage.getItem('selectedMonth') || currentMonth));
     const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
     const firstDayOfWeek = new Date(selectedYear, selectedMonth -1 , 1).getDay();
-    const blanks = Array.from({length: firstDayOfWeek})
+    const blanks = Array.from({length: firstDayOfWeek});
+    const [calenderData, setCalenderData] = useState({});
+    const token = localStorage.getItem('token');
     const handleSelectYear = (e) => {
         setSelectedYear(Number(e.target.value));
     };
@@ -21,7 +23,21 @@ const HealthCare = () => {
         setSelectedMonth(Number(e.target.value));
     };
     const navigate = useNavigate();
+    const fetchMonthlyMemos = async() => {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/users/healthcare/list?year=${selectedYear}&month=${selectedMonth}`, {
+                    headers: {'Authorization': `Bearer ${token}`}
+                });
+                if (!response.ok) throw new Error('カレンダーのデータ取得に失敗しました。');
+                const data = await response.json();
+                setCalenderData(data);
+                console.log(calenderData);
+            } catch (error) {
+                alert(error.message);
+            }
+        };
     useEffect(() => {
+        fetchMonthlyMemos();
         localStorage.setItem('selectedYear', JSON.stringify(selectedYear));
         localStorage.setItem('selectedMonth', JSON.stringify(selectedMonth));
     }, [selectedYear, selectedMonth]);
@@ -53,6 +69,7 @@ const HealthCare = () => {
                         return (
                             <div 
                                 className={dayClass} 
+                                key={`${dayClass}-${i}`}
                                 onClick={() => navigate(`/healthcare/${selectedYear}/${selectedMonth}/${i + 1}`)}>
                                 <p>{i+1}</p>
                             </div>
