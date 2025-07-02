@@ -28,3 +28,9 @@ class MemoCreate(MemoBase):
 
 class MemoResponse(MemoBase):
     id: int
+
+
+class HospitalMemoResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    day: int
+    hospital: str = ""

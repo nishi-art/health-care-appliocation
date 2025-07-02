@@ -58,7 +58,7 @@ async def login_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 async def read_users_me(current_user: models.User = Depends(get_current_user)):
     return current_user
 
-# カレンダーのデータ取得
+# カレンダーのメモデータ取得
 @router.get("/healthcare/get", response_model=schemas.MemoResponse)
 async def get_calender_data(
     year: int, 
@@ -92,6 +92,18 @@ async def save_calender_data(
     db_memo = crud.create_or_update_memo(db, current_user.id, memo)
     return db_memo
 
+# カレンダー全体のhospitalデータ取得
+@router.get("/healthcare/list", response_model=list[schemas.HospitalMemoResponse])
+async def get_mothly_memos(
+    year: int,
+    month: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
+    memos = db.query(models.Memo).filter_by(
+        user_id=current_user.id, year=year, month=month
+        ).all()
+    return memos
 
 '''
 引数userを用意しているがこれはuserRegistraionクラスを基に
