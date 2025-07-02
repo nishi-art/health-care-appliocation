@@ -103,6 +103,7 @@ async def get_mothly_memos(
     memos = db.query(models.Memo).filter_by(
         user_id=current_user.id, year=year, month=month
         ).all()
+    print("メモ:",memos)
     return memos
 
 '''

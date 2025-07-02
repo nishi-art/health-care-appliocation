@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const HealthCare = () => {
     const currentYear = new Date().getFullYear();
@@ -16,6 +16,7 @@ const HealthCare = () => {
     const blanks = Array.from({length: firstDayOfWeek});
     const [calenderData, setCalenderData] = useState({});
     const token = localStorage.getItem('token');
+    const location = useLocation();
     const handleSelectYear = (e) => {
         setSelectedYear(Number(e.target.value));
     };
@@ -30,8 +31,11 @@ const HealthCare = () => {
                 });
                 if (!response.ok) throw new Error('カレンダーのデータ取得に失敗しました。');
                 const data = await response.json();
-                setCalenderData(data);
-                console.log(calenderData);
+                const hospitalMap = {};
+                data.forEach((item) => {
+                    hospitalMap[item.day] = item.hospital
+                });
+                setCalenderData(hospitalMap);
             } catch (error) {
                 alert(error.message);
             }
@@ -40,7 +44,11 @@ const HealthCare = () => {
         fetchMonthlyMemos();
         localStorage.setItem('selectedYear', JSON.stringify(selectedYear));
         localStorage.setItem('selectedMonth', JSON.stringify(selectedMonth));
-    }, [selectedYear, selectedMonth]);
+    }, [selectedYear, selectedMonth, location.pathname]);
+
+    useEffect(() => {
+        console.log(calenderData);
+    }, [calenderData]);
 
     return (
         <>  
@@ -68,10 +76,11 @@ const HealthCare = () => {
                         if (dayOfWeek === 6) dayClass += ' saturday';
                         return (
                             <div 
-                                className={dayClass} 
-                                key={`${dayClass}-${i}`}
-                                onClick={() => navigate(`/healthcare/${selectedYear}/${selectedMonth}/${i + 1}`)}>
-                                <p>{i+1}</p>
+                            className={dayClass} 
+                            key={`${dayClass}-${i}`}
+                            onClick={() => navigate(`/healthcare/${selectedYear}/${selectedMonth}/${i + 1}`)}>
+                                <p className='day-text'>{i+1}</p>
+                                <p className='hospital-schedule'>＜病院＞<br/>{calenderData[i+1] || "なし"}</p>
                             </div>
                         )
                     })

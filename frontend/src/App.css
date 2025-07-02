@@ -176,6 +176,16 @@ body {
         .sunday {
             background-color: rgba(252, 5, 5, 0.2);
         }
+        .day-text {
+            position: relative;
+            top: -25px;
+            left: 5px;
+            font-size: 20px;
+        }
+        .hospital-schedule {
+            font-size: 10px;
+            margin-inline: 5px;
+        }
     }
 }
 .back-calender {
