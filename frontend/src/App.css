@@ -47,17 +47,38 @@ body {
         }
     }
 }
+.header-with-menu:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
 .menu {
     margin-top: 10px;
     margin-inline: 100px;
     border-bottom: 1px solid #666666;
-    display: flex;
-    justify-content: center;
-    gap: 100px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     li {
         list-style: none;
         font-weight: bolder;
         margin-bottom: 5px;
+        text-align: center;
+    }
+    li:hover {
+        cursor: pointer;
+        opacity: 0.5;
+    }
+}
+.health-care-menu {
+    margin-top: 10px;
+    margin-inline: 100px;
+    border-bottom: 1px solid #666666;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    li {
+        list-style: none;
+        font-weight: bolder;
+        margin-bottom: 5px;
+        text-align: center;
     }
     li:hover {
         cursor: pointer;
@@ -211,6 +232,14 @@ body {
     padding: 10px;
     border: 1px solid #000;
     border-radius: 20px;
+    textarea {
+        resize: none;
+        field-sizing: content;
+        min-width: 500px;
+        min-height: 50px;
+        max-height: 200px;
+        overflow: auto;
+    }
 }
 .save-btn {
     text-align: center;
