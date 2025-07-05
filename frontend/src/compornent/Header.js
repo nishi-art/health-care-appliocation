@@ -10,17 +10,26 @@ const Header = ({ isAuthenticated, handleRemoveToken }) => {
 
     return (
     <>
-        <div className='header-with-menu'>
+        <div className='header-with-menu' onClick={() => navigate('/')}>
             <h1 className='header'>Pet Health Care</h1>
             {!isAuthenticated && 
             <div className='user-management'>
-                <button className='btn' onClick={() => navigate('/login')}>ログイン</button>
-                <button className='btn' onClick={() => navigate('/register')}>新規登録</button>
+                <button className='btn' onClick={(e) => {
+                    navigate('/login');
+                    e.stopPropagation();
+                }}>ログイン</button>
+                <button className='btn' onClick={(e) => {
+                    navigate('/register');
+                    e.stopPropagation();
+                }}>新規登録</button>
             </div>
             }
             {isAuthenticated && 
             <div className='user-logout'>
-                <button className='btn' onClick={() => handleLogout()}>ログアウト</button>
+                <button className='btn' onClick={(e) => {
+                    handleLogout();
+                    e.stopPropagation();
+                }}>ログアウト</button>
             </div>
             }
         </div>

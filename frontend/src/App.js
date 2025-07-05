@@ -1,14 +1,16 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
+import { checkAuthStatus } from './utils/auth';
 import Header from './compornent/Header';
 import Menu from './compornent/Menu';
+import HealthCareMenu from './compornent/HealthCareMenu';
 import Login from './compornent/Login';
 import NewRegistration from './compornent/NewRegistration';
-import HealthCare from './compornent/HealthCare';
 import QuestionToAI from './compornent/QuestionToAI';
-import { checkAuthStatus } from './utils/auth';
 import MemoPaper from './compornent/MemoPaper';
+import Calender from './compornent/Calender';
+import CalculateCalorie from './compornent/CalculateCalorie';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -74,8 +76,7 @@ function App() {
                              isAuthenticated={isAuthenticated}
                              handleRemoveToken={handleRemoveToken} 
                             />
-                            <Menu />
-                            <HealthCare />
+                            <HealthCareMenu />
                         </> :
                         <Navigate to='/' />
                 } />
@@ -91,7 +92,7 @@ function App() {
                         </> :
                         <Navigate to='/' />
                 } />
-                <Route path='/healthcare/:year/:month/:day' element={
+                <Route path='/calender/:year/:month/:day' element={
                     isAuthenticated ? 
                         <>
                             <Header
@@ -104,6 +105,31 @@ function App() {
                 }>
 
                 </Route>
+                <Route path='calender' element={
+                    isAuthenticated ?
+                        <>
+                            <Header
+                             isAuthenticated={isAuthenticated} 
+                             handleRemoveToken={handleRemoveToken}
+                            />
+                            <HealthCareMenu />
+                            <Calender />
+                        </> :
+                        <Navigate to='/' />
+                }>
+                </Route>
+                <Route path='calorie' element={
+                    isAuthenticated ? 
+                        <>
+                            <Header
+                             isAuthenticated={isAuthenticated} 
+                             handleRemoveToken={handleRemoveToken}
+                            />
+                            <HealthCareMenu />
+                            <CalculateCalorie />
+                        </> :
+                        <Navigate to='/' />
+                }></Route>
             </Routes>
         </BrowserRouter>
     );

@@ -54,7 +54,7 @@ function MemoPaper() {
 
     return (
         <>
-            <p className='back-calender' onClick={() => navigate('/healthcare')}>カレンダーに戻る</p>
+            <p className='back-calender' onClick={() => navigate('/calender')}>カレンダーに戻る</p>
             <p className='current-date'>{year}年{month}月{day}日</p>
             <div className='memo-paper'>
                 <div className='meal'>
