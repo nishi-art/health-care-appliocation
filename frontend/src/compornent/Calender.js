@@ -8,9 +8,9 @@ const Calender = () => {
     const years = [currentYear+1, currentYear, currentYear-1, currentYear-2];
     const months = Array.from({length: 12}, (_,i)=>i+1);
     const [selectedYear, setSelectedYear] = useState(
-        JSON.parse(localStorage.getItem('seletedYear') || currentYear));
+        JSON.parse(localStorage.getItem('CaCoSeletedYear') || currentYear));
     const [selectedMonth, setSelectedMonth] = useState(
-        JSON.parse(localStorage.getItem('selectedMonth') || currentMonth));
+        JSON.parse(localStorage.getItem('CaCoSelectedMonth') || currentMonth));
     const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
     const firstDayOfWeek = new Date(selectedYear, selectedMonth -1 , 1).getDay();
     const blanks = Array.from({length: firstDayOfWeek});
@@ -24,14 +24,14 @@ const Calender = () => {
         setSelectedMonth(Number(e.target.value));
     };
     const navigate = useNavigate();
-    const fetchMonthlyMemos = async() => {
+    const fetchMonthlyHospitalMemos = async() => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/users/healthcare/list?year=${selectedYear}&month=${selectedMonth}`, {
+                const response = await fetch(`http://127.0.0.1:8000/users/hospital/list?year=${selectedYear}&month=${selectedMonth}`, {
                     headers: {'Authorization': `Bearer ${token}`}
                 });
                 if (!response.ok) throw new Error('カレンダーのデータ取得に失敗しました。');
-                const data = await response.json();
                 const hospitalMap = {};
+                const data = await response.json();
                 data.forEach((item) => {
                     hospitalMap[item.day] = item.hospital
                 });
@@ -41,9 +41,9 @@ const Calender = () => {
             }
         };
     useEffect(() => {
-        fetchMonthlyMemos();
-        localStorage.setItem('selectedYear', JSON.stringify(selectedYear));
-        localStorage.setItem('selectedMonth', JSON.stringify(selectedMonth));
+        fetchMonthlyHospitalMemos();
+        localStorage.setItem('CaCoSelectedYear', JSON.stringify(selectedYear));
+        localStorage.setItem('CaCoSelectedMonth', JSON.stringify(selectedMonth));
     }, [selectedYear, selectedMonth, location.pathname]);
 
     useEffect(() => {

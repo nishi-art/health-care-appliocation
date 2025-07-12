@@ -31,4 +31,5 @@ class Memo(Base):
     exercise: Mapped[str] = mapped_column(default="", nullable=False)
     hospital: Mapped[str] = mapped_column(default="", nullable=False)
     other: Mapped[str] = mapped_column(default="", nullable=False)
+    weight: Mapped[str] = mapped_column(default="", nullable=False)
     user: Mapped["User"] = relationship("User", back_populates="memos")

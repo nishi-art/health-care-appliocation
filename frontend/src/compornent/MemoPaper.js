@@ -9,6 +9,7 @@ function MemoPaper() {
     const [exercise, setExercise] = useState('');
     const [hospital, setHospital] = useState('');
     const [other, setOther] = useState('');
+    const [weight, setWeight] = useState('');
     const token = localStorage.getItem('token');
 
     const fetchMemo = async() => {
@@ -22,6 +23,7 @@ function MemoPaper() {
             setExercise(data.exercise || '');
             setHospital(data.hospital || '');
             setOther(data.other || '');
+            setWeight(data.weight || '');
         } catch (error) {
             alert(error.message);
         }
@@ -39,7 +41,7 @@ function MemoPaper() {
                     year: Number(year),
                     month: Number(month), 
                     day: Number(day),
-                    meal, exercise, hospital, other,
+                    meal, exercise, hospital, other, weight,
                 }),
             });
             if (!response.ok) throw new Error('保存に失敗しました。');
@@ -48,6 +50,23 @@ function MemoPaper() {
         }
 
     }
+
+    const toHalfWidthNumber = (e) => {
+        /* /.../は正規表現
+           今回は全角０～９までの数字のすべてを指定
+         */
+        let value = e.target.value;
+        value.replace(/[０-９]/g, (s) => {
+            /* 0xFEE0は10進数にすると65248であり
+               これはUnicdeでの全角文字と半角文字の差である
+               つまりs.charCodeAtで文字をUnicodeの番号に変換し
+               全角文字と半角文字の差を引き半角文字のUnicodeにして
+               String.fromCharCodeでUnicodeの番号を文字に戻す */
+            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0)
+        });
+        e.target.value = value.replace(/[^0-9]/g, '');
+    };
+
     useEffect(() => {
         fetchMemo();
     }, [year, month, day]);
@@ -57,21 +76,30 @@ function MemoPaper() {
             <p className='back-calender' onClick={() => navigate('/calender')}>カレンダーに戻る</p>
             <p className='current-date'>{year}年{month}月{day}日</p>
             <div className='memo-paper'>
-                <div className='meal'>
+                <div>
+                    <div className='meal'>
                     <p>＜食事＞</p>
                     <textarea value={meal} onChange={(e) => setMeal(e.target.value)}></textarea>
+                    </div>
+                    <div className='exercise'>
+                        <p>＜運動＞</p>
+                        <textarea value={exercise} onChange={(e) => setExercise(e.target.value)}></textarea>
+                    </div>
+                    <div className='hospital'>
+                        <p>＜病院＞</p>
+                        <textarea value={hospital} onChange={(e) => setHospital(e.target.value)}></textarea>
+                    </div>
+                    <div className='other'>
+                        <p>＜その他＞</p>
+                        <textarea value={other} onChange={(e) => setOther(e.target.value)}></textarea>
+                    </div>
                 </div>
-                <div className='exercise'>
-                    <p>＜運動＞</p>
-                    <textarea value={exercise} onChange={(e) => setExercise(e.target.value)}></textarea>
-                </div>
-                <div className='hospital'>
-                    <p>＜病院＞</p>
-                    <textarea value={hospital} onChange={(e) => setHospital(e.target.value)}></textarea>
-                </div>
-                <div className='other'>
-                    <p>＜その他＞</p>
-                    <textarea value={other} onChange={(e) => setOther(e.target.value)}></textarea>
+                <div className='weight'>
+                    <p>＜体重＞（半角数字）</p>
+                    <textarea value={weight} onChange={(e) => {
+                        toHalfWidthNumber(e);
+                        setWeight(e.target.value);
+                    }}></textarea><span> kg</span>
                 </div>
             </div>
             <div className='save-btn'>

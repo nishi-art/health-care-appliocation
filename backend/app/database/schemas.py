@@ -22,6 +22,7 @@ class MemoBase(BaseModel):
     exercise: str = ""
     hospital: str = ""
     other: str = ""
+    weight: str = ""
 
 class MemoCreate(MemoBase):
     pass
@@ -34,3 +35,8 @@ class HospitalMemoResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     day: int
     hospital: str = ""
+
+class WeightMemoResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    day: int
+    weight: str = ""

@@ -7,6 +7,7 @@ const HealthCareMenu = () => {
         <> 
             <ul className='health-care-menu'>
                 <li onClick={() => navigate('/calender')}>カレンダーと記録</li>
+                <li onClick={() => navigate('/weight')}>体重の推移</li>
                 <li onClick={() => navigate('/calorie')}>カロリー計算</li>
             </ul>
         </>
