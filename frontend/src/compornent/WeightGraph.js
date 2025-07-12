@@ -30,11 +30,18 @@ const WeightGraph = () => {
                 weightMap[item.day] = item.weight
             });
             setWeightData(weightMap);
-            console.log(weightMap);
         } catch (error) {
             alert(error.message);
         }
     }
+    useEffect(() => {
+        fetchMonthlyWeightMemos();
+        localStorage.setItem('WeCoSeletedYear', JSON.stringify(selectedYear));
+        localStorage.setItem('WeCoSelectedMonth', JSON.stringify(selectedMonth));
+    }, [selectedYear, selectedMonth,]);
+    useEffect(() => {
+        console.log(weightData);
+    }, [weightData]);
     return (
         <>
             <div className='weight-graph'>
