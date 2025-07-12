@@ -18,7 +18,6 @@ class Base(DeclarativeBase):
 
 def init_db():
     Base.metadata.create_all(bind=engine)
-    print("データベース初期化完了")
 
 def get_db():
     db = SessionLocal()  # セッションの開始

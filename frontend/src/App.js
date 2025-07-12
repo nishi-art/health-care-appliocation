@@ -10,6 +10,7 @@ import NewRegistration from './compornent/NewRegistration';
 import QuestionToAI from './compornent/QuestionToAI';
 import MemoPaper from './compornent/MemoPaper';
 import Calender from './compornent/Calender';
+import WeightGraph from './compornent/WeightGraph';
 import CalculateCalorie from './compornent/CalculateCalorie';
 
 function App() {
@@ -114,6 +115,19 @@ function App() {
                             />
                             <HealthCareMenu />
                             <Calender />
+                        </> :
+                        <Navigate to='/' />
+                }>
+                </Route>
+                <Route path='weight' element={
+                    isAuthenticated ? 
+                        <>
+                            <Header
+                             isAuthenticated={isAuthenticated}
+                             handleRemoveToken={handleRemoveToken}
+                            />
+                            <HealthCareMenu />
+                            <WeightGraph />
                         </> :
                         <Navigate to='/' />
                 }>

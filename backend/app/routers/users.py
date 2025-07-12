@@ -80,6 +80,7 @@ async def get_calender_data(
         "exercse": "",
         "hospital": "",
         "other": "",
+        "weight": "",
     }
 
 # カレンダーのデータ保存
@@ -92,9 +93,9 @@ async def save_calender_data(
     db_memo = crud.create_or_update_memo(db, current_user.id, memo)
     return db_memo
 
-# カレンダー全体のhospitalデータ取得
-@router.get("/healthcare/list", response_model=list[schemas.HospitalMemoResponse])
-async def get_mothly_memos(
+# 指定した年月のカレンダーメモのhospitalデータ取得
+@router.get("/hospital/list", response_model=list[schemas.HospitalMemoResponse])
+async def get_mothly_hospital_memos(
     year: int,
     month: int,
     db: Session = Depends(get_db),
@@ -103,15 +104,19 @@ async def get_mothly_memos(
     memos = db.query(models.Memo).filter_by(
         user_id=current_user.id, year=year, month=month
         ).all()
-    print("メモ:",memos)
+    print("hospitalメモ:",memos)
     return memos
 
-'''
-引数userを用意しているがこれはuserRegistraionクラスを基に
-フロントエンドから送信されたデータを使って自動的に
-user = userRegistration(
-    email: "examle",
-    password: "example"
-)
-のようなインスタンスが生成されている
-'''
+# 指定した年月のカレンダーメモのweightデータ取得
+@router.get("/weight/list", response_model=list[schemas.WeightMemoResponse])
+async def get_monthly_weight_memos(
+    year: int,
+    month: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
+    memos = db.query(models.Memo).filter_by(
+        user_id=current_user.id, year=year, month=month
+    ).all()
+    print("weightメモ:",memos)
+    return memos

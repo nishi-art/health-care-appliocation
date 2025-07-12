@@ -26,6 +26,7 @@ def create_or_update_memo(db: Session, user_id: int, memo: schemas.MemoCreate):
         db_memo.exercise = memo.exercise
         db_memo.hospital = memo.hospital
         db_memo.other = memo.other
+        db_memo.weight = memo.weight
     else:
         db_memo = models.Memo(
             user_id=user_id,
@@ -35,7 +36,8 @@ def create_or_update_memo(db: Session, user_id: int, memo: schemas.MemoCreate):
             meal=memo.meal,
             exercise=memo.exercise,
             hospital=memo.hospital,
-            other=memo.other
+            other=memo.other,
+            weight=memo.weight
         )
         db.add(db_memo)
     db.commit()
