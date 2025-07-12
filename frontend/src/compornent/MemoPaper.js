@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function MemoPaper() {
@@ -11,6 +11,7 @@ function MemoPaper() {
     const [other, setOther] = useState('');
     const [weight, setWeight] = useState('');
     const token = localStorage.getItem('token');
+    const isComposing = useRef(false);
 
     const fetchMemo = async() => {
         try {
@@ -51,20 +52,36 @@ function MemoPaper() {
 
     }
 
-    const toHalfWidthNumber = (e) => {
+    const toHalfWidthNumber = (value) => {
         /* /.../は正規表現
            今回は全角０～９までの数字のすべてを指定
          */
-        let value = e.target.value;
-        value.replace(/[０-９]/g, (s) => {
-            /* 0xFEE0は10進数にすると65248であり
-               これはUnicdeでの全角文字と半角文字の差である
-               つまりs.charCodeAtで文字をUnicodeの番号に変換し
-               全角文字と半角文字の差を引き半角文字のUnicodeにして
-               String.fromCharCodeでUnicodeの番号を文字に戻す */
-            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0)
-        });
-        e.target.value = value.replace(/[^0-9]/g, '');
+        let formatteValue = value.replace(/[０-９．]/g, (s) => {
+                /* 0xFEE0は10進数にすると65248であり
+                これはUnicdeでの全角文字と半角文字の差である
+                つまりs.charCodeAtで文字をUnicodeの番号に変換し
+                全角文字と半角文字の差を引き半角文字のUnicodeにして
+                String.fromCharCodeでUnicodeの番号を文字に戻す */
+                if (s === '．') return '.'; 
+                return String.fromCharCode(s.charCodeAt(0) - 0xFEE0)
+            });
+        formatteValue = formatteValue.replace(/[^0-9.]/g, '');
+        return formatteValue
+    };
+    const handleChangeWeightText = (e) => {
+        if (isComposing.current) {
+            setWeight(e.target.value);
+        } else {
+            const value = toHalfWidthNumber(e.target.value);
+            setWeight(value);
+        }
+    };
+    const handleConversionStart = () => {
+        isComposing.current = true;
+    };
+    const handleConversionEnd = (e) => {
+        isComposing.current = false;
+        handleChangeWeightText(e);
     };
 
     useEffect(() => {
@@ -96,10 +113,12 @@ function MemoPaper() {
                 </div>
                 <div className='weight'>
                     <p>＜体重＞（半角数字）</p>
-                    <textarea value={weight} onChange={(e) => {
-                        toHalfWidthNumber(e);
-                        setWeight(e.target.value);
-                    }}></textarea><span> kg</span>
+                    <textarea 
+                    value={weight} 
+                    onChange={handleChangeWeightText}
+                    onCompositionStart={handleConversionStart}
+                    onCompositionEnd={handleConversionEnd}
+                    ></textarea><span> kg</span>
                 </div>
             </div>
             <div className='save-btn'>
