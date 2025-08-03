@@ -4,9 +4,9 @@ from ..database import crud, schemas, models
 from ..auth.token import create_accecss_token, get_current_user
 from ..database.database import get_db
 from ..auth .passwordService import verify_password
+from ..services .vector_service import vectorization
 from sqlalchemy.orm import Session
-from fastapi import Depends
-from fastapi import HTTPException
+from fastapi import Depends, HTTPException, Body
 
 # ルータのインスタンスを作成
 router = APIRouter(prefix="/users")
@@ -122,6 +122,8 @@ async def get_monthly_weight_memos(
     return memos
 
 # AIへの質問
-@router.post("/question", response_model=schemas.QuestionToAiResponse)
-async def post_ai_answer(user_input: str):
-    
+@router.post("/question")
+async def post_ai_answer(question_content: schemas.QuestionContent):
+    question = question_content.user_input
+    input_vector = vectorization(question)
+    print(f"質問のベクトル {input_vector}")

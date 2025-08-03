@@ -42,5 +42,8 @@ class WeightMemoResponse(BaseModel):
     weight: str = ""
 
 
+class QuestionContent(BaseModel):
+    user_input: str
+
 class QuestionToAiResponse(BaseModel):
     ai_answer: str = ""
