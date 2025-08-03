@@ -40,3 +40,7 @@ class WeightMemoResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     day: int
     weight: str = ""
+
+
+class QuestionToAiResponse(BaseModel):
+    ai_answer: str = ""

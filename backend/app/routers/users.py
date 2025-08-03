@@ -120,3 +120,8 @@ async def get_monthly_weight_memos(
     ).all()
     print("weightメモ:",memos)
     return memos
+
+# AIへの質問
+@router.post("/question", response_model=schemas.QuestionToAiResponse)
+async def post_ai_answer(user_input: str):
+    

@@ -294,6 +294,12 @@ body {
         }
     }
 }
+/* QuestionToAiコンポーネント */
+.question-to-ai {
+    p {
+        background-color: aqua;
+    }
+}
 
 @media screen and (max-width: 500px) {
     .memo-paper {
