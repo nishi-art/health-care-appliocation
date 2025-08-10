@@ -52,6 +52,6 @@ output_filepath = "../../datasets/embeddings.jsonl"
 print(f"ベクトルデータを'{output_filepath}'に保存中...")
 
 with open(output_filepath, 'w', encoding='utf-8') as f:
-    json.dump(embeddings, f, indent=4, ensure_ascii=False)
+    json.dump(embeddings, f, ensure_ascii=False)
 
 print("保存が完了")
