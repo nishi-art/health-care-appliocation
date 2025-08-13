@@ -6,6 +6,7 @@ from ..database.database import get_db
 from ..auth .passwordService import verify_password
 from ..services .vector_service import vectorization
 from ..services .similarity_search_service import similarity_search
+from ..services .translate_service import translate_text
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, Body
 
@@ -128,3 +129,4 @@ async def post_ai_answer(question_content: schemas.QuestionContent):
     question = question_content.user_input
     question_vector = vectorization(question)
     similarity_search(question_vector)
+    translate_text(question)
