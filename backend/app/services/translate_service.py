@@ -20,7 +20,7 @@ def translate_text(text):
     English:
     """
     response = model.generate_content(prompt)
-    print(response.text)
+    # print(response.text)
     return response.text
 
 '''

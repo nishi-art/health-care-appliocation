@@ -1,4 +1,3 @@
-
 import json
 import torch
 from transformers import AutoTokenizer, AutoModel
@@ -6,7 +5,7 @@ from transformers import AutoTokenizer, AutoModel
 def vectorization(userinput):
     model_name = "SAVSNET/PetBERT"
 
-    print(f"モデル『{model_name}』をダウンロード中...")
+    # print(f"モデル『{model_name}』をダウンロード中...")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModel.from_pretrained(model_name)
 
@@ -31,9 +30,9 @@ def vectorization(userinput):
     # ユーザーの質問をベクトル化して保存する辞書
     embeddings = {}
 
-    print("ベクトル化を開始")
+    # print("ベクトル化を開始")
 
-    print(f"『{userinput}』をベクトル化中...")
+    # print(f"『{userinput}』をベクトル化中...")
 
     # feature-extractionタスクでベクトル化を実行
     embedding_vector = get_embedding(userinput)

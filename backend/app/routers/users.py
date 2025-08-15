@@ -7,6 +7,7 @@ from ..auth .passwordService import verify_password
 from ..services .vector_service import vectorization
 from ..services .similarity_search_service import similarity_search
 from ..services .translate_service import translate_text
+from ..services .gemini_service import request_gemini
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, Body
 
@@ -127,6 +128,9 @@ async def get_monthly_weight_memos(
 @router.post("/question")
 async def post_ai_answer(question_content: schemas.QuestionContent):
     question = question_content.user_input
-    question_vector = vectorization(question)
-    similarity_search(question_vector)
-    translate_text(question)
+    translated_question = translate_text(question)
+    # ユーザーの質問をベクトル化に変換
+    question_vector = vectorization(translated_question)
+    # データセットから質問との類似度が高いものを３つ抽出
+    top_3_docs = similarity_search(question_vector)
+    request_gemini(question, top_3_docs)

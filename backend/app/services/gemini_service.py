@@ -3,7 +3,7 @@ import json
 import os
 from dotenv import load_dotenv
 
-def request_gemini(user_input):
+def request_gemini(user_input, dataset):
     load_dotenv()
     API_KEY = os.getenv("GOOGLE_API_KEY")
 
@@ -14,19 +14,6 @@ def request_gemini(user_input):
             indented_text += f"> {line}\n"
         print(indented_text)
 
-    def load_documents(filepath):
-        print(f"{dataset_path}を読み込んでいます")
-        document = []
-        with open(dataset_path, 'r', encoding='utf-8') as f:
-            for line in f:
-                document.append(json.loads(line))
-        print(f"{len(document)}件のドキュメントを読み込みました")
-        return document
-    
-    # データセットの読み込み
-    documents = load_documents(dataset_path)
-    manual_selection = documents[:1]
-
     # ユーザーの質問
     user_query = user_input
     print("\n--- ユーザーの質問 ---")
@@ -34,7 +21,7 @@ def request_gemini(user_input):
 
     # 参考情報として使うテキストを準備
     context = ""
-    for doc in manual_selection:
+    for doc in dataset:
         context += f"(doc_id: {doc['doc_id']}): {doc['text']}\n"
 
     # プロンプトを構築
@@ -58,6 +45,5 @@ def request_gemini(user_input):
     # 結果の表示
     print_text(f"\n--- Geminiからの回答 ---")
     print_text(response.text)
+    
     return response.text
-
-dataset_path = './datasets/dataset_2.jsonl'
