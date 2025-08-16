@@ -24,9 +24,15 @@ const QuestionToAI = () => {
     return (
         <>
             <div className='question-to-ai'>
-                <textarea value={userInput.user_input} onChange={handleChangeUserInput}></textarea>
-                <button onClick={sendingQuestion}>回答</button>
-                <p>{aiOutput}a</p>
+                <div className='question-form'>
+                    <textarea className='question-container' value={userInput.user_input} onChange={handleChangeUserInput}></textarea>
+                    <button className='send-button' onClick={sendingQuestion}>
+                        <span className='material-symbols-outlined'>autoplay</span>
+                    </button>
+                </div>
+                <p className='tag'>AIからの回答</p>
+                <hr/>
+                <div className='ai-response'></div>
             </div>
         </>
     )

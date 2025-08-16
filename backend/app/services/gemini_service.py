@@ -22,12 +22,17 @@ def request_gemini(user_input, dataset):
     # 参考情報として使うテキストを準備
     context = ""
     for doc in dataset:
-        context += f"(doc_id: {doc['doc_id']}): {doc['text']}\n"
+        source = doc.get('metadata', {}).get('source', '不明な情報源')
+        context += f"doc_id: {doc['doc_id']}\n"
+        context += f"source: {source}\n"
+        context += f"text: {doc['text']}\n"
+        context += "---\n"
 
     # プロンプトを構築
     rag_prompt = f"""
     あなたはペットの健康に関する専門家アシスタントです。
     以下の「参考情報」を**最優先の事実として参考にし、あなた自身の知識も補いながら**ユーザーからの「質問」に総合的かつ分かりやすく回答してください。
+    **回答の最後には, 必ず参考にした情報の ** source の値を** [参考情報: ...] の形式で記載してください。**
 
     ## 参考情報
     {context}
