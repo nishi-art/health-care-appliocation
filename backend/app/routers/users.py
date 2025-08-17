@@ -133,4 +133,5 @@ async def post_ai_answer(question_content: schemas.QuestionContent):
     question_vector = vectorization(translated_question)
     # データセットから質問との類似度が高いものを３つ抽出
     top_3_docs = similarity_search(question_vector)
-    request_gemini(question, top_3_docs)
+    response_text = request_gemini(question, top_3_docs)
+    return response_text

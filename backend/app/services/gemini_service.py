@@ -47,8 +47,9 @@ def request_gemini(user_input, dataset):
     genai.configure(api_key=API_KEY)
     model = genai.GenerativeModel('gemini-2.5-pro')
     response = model.generate_content(rag_prompt)
+    response_text = response.text
     # 結果の表示
-    print_text(f"\n--- Geminiからの回答 ---")
-    print_text(response.text)
+    # print_text(f"\n--- Geminiからの回答 ---")
+    # print_text(response_text)
     
-    return response.text
+    return response_text

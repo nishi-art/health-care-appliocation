@@ -41,8 +41,6 @@ const Login = ({setIsAuthenticated}) => {
             if(!userResponse.ok) {
                 throw new Error('ユーザー情報の取得に失敗しました');
             }
-            const userData = await userResponse.json();
-            console.log('ユーザー情報', userData);
             setIsAuthenticated(true);
             navigate('/menu');
         } catch (error) {
