@@ -47,7 +47,7 @@ const Calender = () => {
     }, [selectedYear, selectedMonth, location.pathname]);
 
     useEffect(() => {
-        console.log(calenderData);
+        // console.log(calenderData);
     }, [calenderData]);
 
     return (

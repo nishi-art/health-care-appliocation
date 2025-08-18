@@ -23,7 +23,13 @@ const QuestionToAI = () => {
                 body: JSON.stringify(userInput),
                 signal: newController.signal,
             });
-            if (!response.ok) throw new Error('AIが回答に失敗しました');
+            if (!response.ok) {
+                if (response.status === 429) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || '現在別の処理を行っています。10秒ほど待って再度操作を行ってください。');
+                }
+                throw new Error('AIが回答に失敗しました');
+            }
             setAiOutput(await response.json());
             setUserInput({'user_input': ''});
         } catch (error) {
@@ -45,6 +51,7 @@ const QuestionToAI = () => {
         setUserInput({
             'user_input': e.target.value
         });
+        console.log(userInput.user_input)
     }
 
     return (
@@ -59,7 +66,11 @@ const QuestionToAI = () => {
                         </button>
                     ) : 
                     (
-                        <button className='send-button' onClick={sendingQuestion}> 
+                        <button 
+                        className='send-button' 
+                        onClick={sendingQuestion}
+                        disabled={isLoading || userInput.user_input.trim() === ''}
+                        > 
                             <span className='material-symbols-outlined'>autoplay</span>            
                         </button>
                     )}

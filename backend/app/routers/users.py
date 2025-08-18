@@ -111,7 +111,7 @@ async def get_mothly_hospital_memos(
     memos = db.query(models.Memo).filter_by(
         user_id=current_user.id, year=year, month=month
         ).all()
-    print("hospitalメモ:",memos)
+    # print("hospitalメモ:",memos)
     return memos
 
 # 指定した年月のカレンダーメモのweightデータ取得
@@ -125,12 +125,12 @@ async def get_monthly_weight_memos(
     memos = db.query(models.Memo).filter_by(
         user_id=current_user.id, year=year, month=month
     ).all()
-    print("weightメモ:",memos)
+    # print("weightメモ:",memos)
     return memos
 
 # AIへの質問
 @router.post("/question")
-async def post_ai_answer(question_content: schemas.QuestionContent, request: Request):
+def post_ai_answer(question_content: schemas.QuestionContent):
     global is_generating
 
     if is_generating:
@@ -145,14 +145,10 @@ async def post_ai_answer(question_content: schemas.QuestionContent, request: Req
         translated_question = translate_text(question)
         # ユーザーの質問をベクトルに変換
         question_vector = vectorization(translated_question)
-
-        # ユーザーが接続を切断していないか確認(質問のキャンセルも)
-        if await request.is_disconnected():
-            return
-
         # データセットから質問との類似度が高いものを３つ抽出
         top_3_docs = similarity_search(question_vector)
         response_text = request_gemini(question, top_3_docs)
         return response_text
     finally:
         is_generating = False
+        print("処理が終了しました。")

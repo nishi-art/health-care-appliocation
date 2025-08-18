@@ -52,6 +52,7 @@ function MemoPaper() {
 
     }
 
+    // 入力された全角数字を半角数字にする関数
     const toHalfWidthNumber = (value) => {
         /* /.../は正規表現
            今回は全角０～９までの数字のすべてを指定
