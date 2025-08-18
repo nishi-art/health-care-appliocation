@@ -7,31 +7,38 @@ const QuestionToAI = () => {
     });
     const [aiOutput, setAiOutput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const controller = new AbortController();
-    const signal = controller.signal;
+    const [tagText, setTagText] = useState('AIからの回答');
+    const [controller, setController] = useState(null);
 
     const sendingQuestion = async() => {
+        const newController = new AbortController();
+        setController(newController);
         setIsLoading(true);
+        setTagText('回答生成中...');
+        setAiOutput('');
         try {
             const response = await fetch('http://127.0.0.1:8000/users/question', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(userInput),
-                signal,
+                signal: newController.signal,
             });
             if (!response.ok) throw new Error('AIが回答に失敗しました');
             setAiOutput(await response.json());
             setUserInput({'user_input': ''});
-            console.log(aiOutput);
         } catch (error) {
-            alert(error.message);
+            if (error.name === 'AbortError') {
+                setAiOutput('')
+            } else {
+                alert(error.message);
+            }
         } finally {
             setIsLoading(false);
+            setTagText('AIからの回答');
         }
     }
     const stopRequest = () => {
-        controller.abort();
-        setIsLoading(false);
+        if (controller) controller.abort();
     }
 
     const handleChangeUserInput = (e) => {
@@ -57,9 +64,9 @@ const QuestionToAI = () => {
                         </button>
                     )}
                 </div>
-                <p className='tag'>AIからの回答</p>
+                <p className='tag'>{tagText}</p>
                 <hr/>
-                <div className='ai-response'></div>
+                <div className='ai-response'>{aiOutput}</div>
             </div>
         </>
     )

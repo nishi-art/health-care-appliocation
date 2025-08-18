@@ -340,6 +340,9 @@ body {
     hr {
         width: 94%;
     }
+    .ai-response {
+        margin-inline: 25px;
+    }
 }
 
 @media screen and (max-width: 500px) {
