@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import AiResponseField from './AiResponseField';
 
 const QuestionToAI = () => {
     const [userInput, setUserInput] = useState({
@@ -7,14 +8,12 @@ const QuestionToAI = () => {
     });
     const [aiOutput, setAiOutput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [tagText, setTagText] = useState('AIからの回答');
     const [controller, setController] = useState(null);
 
     const sendingQuestion = async() => {
         const newController = new AbortController();
         setController(newController);
         setIsLoading(true);
-        setTagText('回答生成中...');
         setAiOutput('');
         try {
             const response = await fetch('http://127.0.0.1:8000/users/question', {
@@ -40,7 +39,6 @@ const QuestionToAI = () => {
             }
         } finally {
             setIsLoading(false);
-            setTagText('AIからの回答');
         }
     }
     const stopRequest = () => {
@@ -51,7 +49,6 @@ const QuestionToAI = () => {
         setUserInput({
             'user_input': e.target.value
         });
-        console.log(userInput.user_input)
     }
 
     return (
@@ -75,9 +72,25 @@ const QuestionToAI = () => {
                         </button>
                     )}
                 </div>
-                <p className='tag'>{tagText}</p>
+                {isLoading ? 
+                (
+                    // <p className='tag loading-animation'>回答生成中...</p>
+                    <div className='tag loading-animation'>
+                        <span>回</span>
+                        <span>答</span>
+                        <span>生</span>
+                        <span>成</span>
+                        <span>中</span>
+                        <span>.</span>
+                        <span>.</span>
+                        <span>.</span>
+                    </div>
+                ) : 
+                (
+                    <p className='tag'>AIからの回答</p>
+                )}
                 <hr/>
-                <div className='ai-response'>{aiOutput}</div>
+                <AiResponseField aiOutput={aiOutput} />
             </div>
         </>
     )
