@@ -54,6 +54,14 @@ const QuestionToAI = () => {
     return (
         <>
             <div className='question-to-ai'>
+                <div className='cautionary-note'>
+                    <p>※</p>
+                    <p className='text'>
+                        このAIは様々な病気に関する情報を参照させているため、様々な病気に関することが回答に含まれることがあります。<br />
+                        しかし重要なのはまず獣医師に相談することです。AIの回答は参考程度に考えてください。<br />
+                        動物とは意思疎通が出来ません。些細な症状でも早急に獣医師に相談することが最重要です。
+                    </p>
+                </div>
                 <div className='question-form'>
                     <textarea className='question-container' value={userInput.user_input} onChange={handleChangeUserInput}></textarea>
                     {isLoading ? 

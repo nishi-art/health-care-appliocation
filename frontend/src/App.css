@@ -296,6 +296,14 @@ body {
 }
 /* QuestionToAiコンポーネント */
 .question-to-ai {
+    .cautionary-note {
+        display: flex;
+        justify-content: center;
+        margin-inline: 30px;
+        p {
+            color: red;
+        }
+    }
     .question-form {
         display: flex;
         justify-content: center;
