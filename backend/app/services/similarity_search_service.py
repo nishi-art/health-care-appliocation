@@ -5,8 +5,8 @@ from pathlib import Path
 def similarity_search(question):
     current_file_path = Path(__file__)
     current_dir = current_file_path.parent
-    vector_dataset_path = current_dir.parent.parent / 'datasets' / 'embeddings.jsonl'
-    original_dataset_path = current_dir.parent.parent / 'datasets' / 'dataset.jsonl'
+    vector_dataset_path = current_dir.parent.parent / 'datasets' / 'vectorize_by_gemini.jsonl'
+    original_dataset_path = current_dir.parent.parent / 'datasets' / 'japanese_data.jsonl'
     document = {}
     similarities = {}
     
@@ -53,6 +53,7 @@ def similarity_search(question):
     # print("\n類似度が高い上位３つのドキュメント")
     for doc_data in sorted_docs[:3]:
         doc_id = doc_data['doc_id']
+        print(doc_id)
+        print(similarities[doc_id])
         top_3_docs.append(document[doc_id])
-    # print(top_3_docs)
     return top_3_docs

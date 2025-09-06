@@ -1,7 +1,7 @@
 import json
 import torch
 from transformers import AutoTokenizer, AutoModel
-
+'''
 def vectorization(userinput):
     model_name = "SAVSNET/PetBERT"
 
@@ -15,13 +15,8 @@ def vectorization(userinput):
         with torch.no_grad():
             model_output = model(**encode_input)
         
-        
-            
-        '''
         token_vectors = model_output.last_hidden_state
         sentence_embedding = torch.mean(token_vectors[0], dim=0).tolist()
-        '''
-
 
         sentence_embedding = model_output.last_hidden_state[0, 0, :].tolist()
 
@@ -44,8 +39,6 @@ def vectorization(userinput):
         print("-> 失敗。")
     
     return embeddings
-
-
 '''
 from google import genai
 import json
@@ -65,11 +58,11 @@ def vectorization(userinput):
 
     if result:
         result_list = result.embeddings
-        embedding_list = [{"vector": embedding.values} for embedding in result_list]
-        embeddings["user_input"] = embedding_list[0]["vector"]
+        for embedding in result_list:
+        # embedding_list = [{"vector": embedding.values} for embedding in result_list]
+            embeddings["user_input"] = embedding.values
         print("-> 成功。")
     else:
         print("-> 失敗。")
     
     return embeddings
-'''
