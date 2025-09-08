@@ -1,5 +1,4 @@
 import google.generativeai as genai
-import json
 import os
 from dotenv import load_dotenv
 
@@ -32,7 +31,6 @@ def request_gemini(user_input, dataset):
     rag_prompt = f"""
     あなたはペットの健康に関する専門家アシスタントです。
     以下の「参考情報」を**最優先の事実として参考にし、あなた自身の知識も補いながら**ユーザーからの「質問」に総合的かつ分かりやすく回答してください。
-    **回答の最後には, 必ず参考にした情報の ** source の値を** [参考情報: ...] の形式で記載してください。**
 
     ## 参考情報
     {context}

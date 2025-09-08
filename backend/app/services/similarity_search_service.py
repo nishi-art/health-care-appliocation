@@ -56,4 +56,6 @@ def similarity_search(question):
         print(doc_id)
         print(similarities[doc_id])
         top_3_docs.append(document[doc_id])
+        
+    # print(top_3_docs)
     return top_3_docs

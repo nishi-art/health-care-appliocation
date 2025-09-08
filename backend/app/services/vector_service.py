@@ -1,7 +1,8 @@
+'''
 import json
 import torch
 from transformers import AutoTokenizer, AutoModel
-'''
+
 def vectorization(userinput):
     model_name = "SAVSNET/PetBERT"
 
@@ -15,8 +16,8 @@ def vectorization(userinput):
         with torch.no_grad():
             model_output = model(**encode_input)
         
-        token_vectors = model_output.last_hidden_state
-        sentence_embedding = torch.mean(token_vectors[0], dim=0).tolist()
+        # token_vectors = model_output.last_hidden_state
+        # sentence_embedding = torch.mean(token_vectors[0], dim=0).tolist()
 
         sentence_embedding = model_output.last_hidden_state[0, 0, :].tolist()
 
@@ -40,6 +41,7 @@ def vectorization(userinput):
     
     return embeddings
 '''
+
 from google import genai
 import json
 import os

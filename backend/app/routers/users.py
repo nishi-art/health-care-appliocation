@@ -8,6 +8,7 @@ from ..services .vector_service import vectorization
 from ..services .similarity_search_service import similarity_search
 from ..services .translate_service import translate_text
 from ..services .gemini_service import request_gemini
+from ..services .relevance_check_service import relevance_check
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, Request
 
@@ -142,12 +143,13 @@ def post_ai_answer(question_content: schemas.QuestionContent):
     try:
         is_generating = True
         question = question_content.user_input
-        translated_question = translate_text(question)
+        # translated_question = translate_text(question)
         # ユーザーの質問をベクトルに変換
-        question_vector = vectorization(translated_question)
+        question_vector = vectorization(question)
         # データセットから質問との類似度が高いものを３つ抽出
         top_3_docs = similarity_search(question_vector)
-        response_text = request_gemini(question, top_3_docs)
+        ai_answer = request_gemini(question, top_3_docs)
+        response_text = relevance_check(ai_answer, top_3_docs)
         return response_text
     finally:
         is_generating = False
