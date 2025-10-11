@@ -146,7 +146,7 @@ def post_ai_answer(question_content: schemas.QuestionContent):
         # translated_question = translate_text(question)
         # ユーザーの質問をベクトルに変換
         question_vector = vectorization(question)
-        # データセットから質問との類似度が高いものを３つ抽出
+        # 外部データから質問との類似度が高いものを３つ抽出
         top_3_docs = similarity_search(question_vector)
         ai_answer = request_gemini(question, top_3_docs)
         response_text = relevance_check(ai_answer, top_3_docs)

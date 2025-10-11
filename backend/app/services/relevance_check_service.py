@@ -14,7 +14,7 @@ def relevance_check(ai_answer, top_3_docs):
     for doc in top_3_docs:
         prompt = f"""
         以下の「回答」は、「参考情報」の内容を実質的に含んでいますか？
-        YesかNoだけで答えてください
+        必ず "Yes" または "No" という【英単語】で答えてください。他の単語や記号は一切含めないでください。
 
         ## 回答
         {ai_answer}
@@ -33,6 +33,6 @@ def relevance_check(ai_answer, top_3_docs):
     if used_sources:
         # 重複を除いて回答に出典を追加
         used_source = list(set(used_sources))
-        final_answer += f"\n\n**[参考情報: {', '.join(used_source)}]**"
+        final_answer += f"\n\n**<参考情報: {', '.join(used_source)}>**"
     
     return final_answer
