@@ -9,6 +9,7 @@ const QuestionToAI = () => {
     const [aiOutput, setAiOutput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [controller, setController] = useState(null);
+    const token = localStorage.getItem('token');
 
     const sendingQuestion = async() => {
         const newController = new AbortController();
