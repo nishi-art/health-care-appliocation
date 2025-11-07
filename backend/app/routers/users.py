@@ -1,36 +1,31 @@
 from fastapi import APIRouter   #ルーターのインスタンスを作成するため
-from pydantic import BaseModel   #BaseModelクラスの機能を継承するため
 from ..database import crud, schemas, models
 from ..auth.token import create_accecss_token, get_current_user
 from ..database.database import get_db
 from ..auth .passwordService import verify_password
-from ..services .vector_service import vectorization
-from ..services .similarity_search_service import similarity_search
-from ..services .translate_service import translate_text
-from ..services .gemini_service import request_gemini
-from ..services .relevance_check_service import relevance_check
+from ..services import chat_service
 from sqlalchemy.orm import Session
-from fastapi import Depends, HTTPException, Request
+from fastapi import Depends, HTTPException
+from datetime import datetime, timedelta
 
 # ルータのインスタンスを作成
 router = APIRouter(prefix="/users")
 
-# フラグ
-is_generating: bool = False
-
+# post_ai_answerで使用する 会話履歴を保持する辞書
+chat_histories = {}
 
 # ユーザー登録
 @router.post("/registration", response_model=schemas.UserResponse)  # ハッシュ化されたパスワードなどを除外してJSON形式でレスポンスを返す
 async def registration_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     # 重複チェック
-    db_user = crud.get_user_by_email(db, email=user.email)
+    db_user = crud.get_user_by_user_id(db, user_id=user.user_id)
     if db_user:
         raise HTTPException(
             status_code=400,
-            detail="このメールアドレスは既に使用されています"
+            detail="このユーザーIDは既に使用されています"
         )
     print("登録APIが呼び出されました")
-    print(f"受け取ったデータ: email={user.email} password={user.password}")
+    print(f"受け取ったデータ: user_id={user.user_id} password={user.password}")
     # ユーザー作成
     return crud.create_user(db=db, user=user)
 
@@ -38,23 +33,23 @@ async def registration_user(user: schemas.UserCreate, db: Session = Depends(get_
 @router.post("/login")
 async def login_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     # ユーザー情報の取得
-    db_user = crud.get_user_by_email(db=db, email=user.email)
+    db_user = crud.get_user_by_user_id(db=db, user_id=user.user_id)
     if not db_user:
         raise HTTPException(
             status_code=401,
-            detail="メールアドレスまたはパスワードが正しくありません"
+            detail="ユーザーIDまたはパスワードが正しくありません"
         )
     # パスワードの検証
     if not verify_password(plain_password=user.password, hashed_password=db_user.hashed_password):
         raise HTTPException(
             status_code=401,
-            detail="メールアドレスまたはパスワードが正しくありません"
+            detail="ユーザーIDまたはパスワードが正しくありません"
         )
     # トークンの生成
-    access_token = create_accecss_token(data={"sub": user.email})
+    access_token = create_accecss_token(data={"sub": user.user_id})
     
     print("ログインAPIが呼び出されました")
-    print(f"受け取ったデータ: email={user.email} password={user.password}")
+    print(f"受け取ったデータ: user_id={user.user_id} password={user.password}")
     return {
         "access_token": access_token,
         "token_type": "bearer",
@@ -131,26 +126,38 @@ async def get_monthly_weight_memos(
 
 # AIへの質問
 @router.post("/question")
-def post_ai_answer(question_content: schemas.QuestionContent):
-    global is_generating
+async def post_ai_answer(
+    question_content: schemas.QuestionContent,
+    current_user: models.User = Depends(get_current_user),
+):
+    user_id = current_user.user_id
+    user_message = question_content.user_input
+    current_time = datetime.now()
 
-    if is_generating:
-        raise HTTPException(
-            status_code=429,
-            detail="現在別の処理を行っています。10秒ほど待って再度操作を行ってください。"
-        )
+    history = []
+    created_at = current_time
 
+    # ユーザーの会話履歴を取得
+    if user_id in chat_histories:
+        user_data = chat_histories[user_id]
+        # 作成日時から1日以内の場合、履歴と日時を引き継ぐ
+        if current_time - user_data["created_at"] <= timedelta(days=1):
+            history = user_data["history"]
+            created_at = user_data["created_at"]
+    
     try:
-        is_generating = True
-        question = question_content.user_input
-        # translated_question = translate_text(question)
-        # ユーザーの質問をベクトルに変換
-        question_vector = vectorization(question)
-        # 外部データから質問との類似度が高いものを３つ抽出
-        top_3_docs = similarity_search(question_vector)
-        ai_answer = request_gemini(question, top_3_docs)
-        response_text = relevance_check(ai_answer, top_3_docs)
-        return response_text
-    finally:
-        is_generating = False
-        print("処理が終了しました。")
+        # Geminiの回答と更新された会話履歴の取得
+        final_answer, updated_history_parts = await chat_service.handle_conversation(user_message, history)
+        # 会話履歴の辞書を更新
+        new_hitory = history + updated_history_parts
+        chat_histories[user_id] = {
+            "history": new_hitory,
+            "created_at": created_at
+        }
+        # 最終回答を返す
+        return final_answer
+    except Exception as e:
+        print(f"エラーが発生しました: {e}")
+        if user_id in chat_histories:
+            del chat_histories[user_id]
+        raise HTTPException(status_code=500, detail=f"AIとの対話中にエラーが発生しました")

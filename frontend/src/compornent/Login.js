@@ -8,7 +8,7 @@ const Login = ({setIsAuthenticated}) => {
     const [showPassword, setShowPassword] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
-        email: '',
+        user_id: '',
         password: '',
     });
     const [visibleErrorText, setVisibleErrorText] = useState(false);
@@ -18,7 +18,7 @@ const Login = ({setIsAuthenticated}) => {
         setIsLoading(true);
         try {
             if(formData.email === '' || formData.password === '') {
-                throw new Error('メールアドレスとパスワード両方を入力してください');
+                throw new Error('ユーザーIDとパスワード両方を入力してください');
             }
             const response = await fetch('http://127.0.0.1:8000/users/login', {
                 method: 'POST',
@@ -44,7 +44,7 @@ const Login = ({setIsAuthenticated}) => {
             setIsAuthenticated(true);
             navigate('/menu');
         } catch (error) {
-            if(error.message === 'メールアドレスまたはパスワードが正しくありません') {
+            if(error.message === 'ユーザーIDまたはパスワードが正しくありません') {
                 setVisibleErrorText(true);
             }
             else {
@@ -72,12 +72,12 @@ const Login = ({setIsAuthenticated}) => {
                     handleLogin();}}>
                     {visibleErrorText && 
                         <div className='error-message'>
-                            <p>※メールアドレスまたはパスワードが間違っています</p>
+                            <p>※ユーザーIDまたはパスワードが間違っています</p>
                         </div>
                     }
-                    <div className='mail'>
-                        <label htmlFor="email">メールアドレス</label>
-                        <input type="email" id='email' name='email' onChange={handleInputChange} />
+                    <div className='user-id'>
+                        <label htmlFor="user_id">ユーザーID</label>
+                        <input type="text" id='user_id' name='user_id' onChange={handleInputChange} />
                     </div>
                     <div className='password'>
                         <label htmlFor="password">パスワード</label>

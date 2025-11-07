@@ -85,6 +85,7 @@ body {
         opacity: 0.5;
     }
 }
+/* NewRegistrationコンポーネント */
 .form {
     display: flex;
     flex-direction: column;
@@ -100,7 +101,7 @@ body {
         font-size: 10px;
         color: red;
     }
-    .mail {
+    .user-id {
         display: flex;
         flex-direction: column;
         margin-top: 10px;

@@ -1,9 +1,9 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 
 class UserBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    email:EmailStr
+    user_id: str
 
 class UserCreate(UserBase):
     password: str
@@ -44,6 +44,3 @@ class WeightMemoResponse(BaseModel):
 
 class QuestionContent(BaseModel):
     user_input: str
-
-class QuestionToAiResponse(BaseModel):
-    ai_answer: str = ""

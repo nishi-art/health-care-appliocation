@@ -1,7 +1,6 @@
 from sqlalchemy import create_engine   # SQLAlchemyでデータベース接続を確立するための関数create_engineを使うため
 from sqlalchemy.orm import DeclarativeBase   # SQLAlchemyのORMモデルを作成するための基底クラスを生成する関数を使うため
 from sqlalchemy.orm import sessionmaker   # データベースセッションを作成するためのファクトリクラス
-from . import models
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
 
