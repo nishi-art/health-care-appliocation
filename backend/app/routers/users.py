@@ -15,7 +15,7 @@ router = APIRouter(prefix="/users")
 chat_histories = {}
 
 # ユーザー登録
-@router.post("/registration", response_model=schemas.UserResponse)  # ハッシュ化されたパスワードなどを除外してJSON形式でレスポンスを返す
+@router.post("/registration")
 async def registration_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     # 重複チェック
     db_user = crud.get_user_by_user_id(db, user_id=user.user_id)
@@ -27,7 +27,13 @@ async def registration_user(user: schemas.UserCreate, db: Session = Depends(get_
     print("登録APIが呼び出されました")
     print(f"受け取ったデータ: user_id={user.user_id} password={user.password}")
     # ユーザー作成
-    return crud.create_user(db=db, user=user)
+    crud.create_user(db=db, user=user)
+    access_token = create_accecss_token(data={"sub": user.user_id})
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "message": "ログインしました"
+    }
 
 # ユーザーログイン
 @router.post("/login")
@@ -107,7 +113,6 @@ async def get_mothly_hospital_memos(
     memos = db.query(models.Memo).filter_by(
         user_id=current_user.id, year=year, month=month
         ).all()
-    # print("hospitalメモ:",memos)
     return memos
 
 # 指定した年月のカレンダーメモのweightデータ取得

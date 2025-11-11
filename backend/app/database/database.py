@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker   # データベースセッションを
 import os
 from dotenv import load_dotenv
 
-load_dotenv
+load_dotenv()
 
 SQLALCHEMY_DATABASE_URL = os.getenv("AWS_RDS_ENDPOINT")
 

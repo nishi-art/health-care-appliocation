@@ -29,7 +29,7 @@ const NewRegistration = ({setIsAuthenticated}) => {
                 throw new Error(errorData.detail || `HTTPエラー: ${response.status}`)
             }
             const registrationData = await response.json();
-            console.log('APIレスポンス:', registrationData);
+            localStorage.setItem('token', registrationData.access_token);
             setIsAuthenticated(true);
             navigate('/menu');
         } catch(error) {

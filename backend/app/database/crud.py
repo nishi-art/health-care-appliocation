@@ -10,9 +10,6 @@ def create_user(db: Session, user: schemas.UserCreate):
     db_user = models.User(user_id=user.user_id, hashed_password=hashed_password)
     db.add(db_user)
     db.commit()
-    db.refresh(db_user)
-    return db_user
-
 
 def get_user_memo(db: Session, user_id: int, year: int, month: int, day: int):
     return db.query(models.Memo).filter_by(
