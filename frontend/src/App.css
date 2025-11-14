@@ -73,7 +73,7 @@ body {
     margin-inline: 5%;
     border-bottom: 1px solid #666666;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     li {
         list-style: none;
         font-weight: bolder;
@@ -139,20 +139,13 @@ body {
         cursor: not-allowed;
         opacity: 0.8;
     }
-    .eye-img-registration {
+    .eye-img {
         width: 20px;
         position: relative;
         top: -90px;
         left: 110px;
     }
-    .eye-img-login {
-        width: 20px;
-        position: relative;
-        top: -112px;
-        left: 110px;
-    }
-    .eye-img,
-    .eye-img-login:hover {
+    .eye-img:hover {
         cursor: pointer;
     }
 }

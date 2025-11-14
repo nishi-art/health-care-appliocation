@@ -74,7 +74,7 @@ const NewRegistration = ({setIsAuthenticated}) => {
                     </div>
                     <input className='submit-btn' type="submit" value={isLoading ? "登録中..." : "新規登録"} disabled={isLoading} />
                 </form>
-                <img className='eye-img-registration' src={showPassword ? eyeClose : eyeOpen} 
+                <img className='eye-img' src={showPassword ? eyeClose : eyeOpen} 
                     onClick={() => showPassword ? setShowPassword(false) : setShowPassword(true)} 
                     alt="eye-image" />
             </div>

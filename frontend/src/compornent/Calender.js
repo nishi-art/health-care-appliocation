@@ -46,9 +46,6 @@ const Calender = () => {
         localStorage.setItem('CaCoSelectedMonth', JSON.stringify(selectedMonth));
     }, [selectedYear, selectedMonth, location.pathname]);
 
-    useEffect(() => {
-        // console.log(calenderData);
-    }, [calenderData]);
 
     return (
         <>  

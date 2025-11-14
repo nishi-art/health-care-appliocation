@@ -83,10 +83,9 @@ const Login = ({setIsAuthenticated}) => {
                         <label htmlFor="password">パスワード</label>
                         <input type={showPassword ? 'password' : 'text'} id='password' name='password' onChange={handleInputChange} />
                     </div>
-                    <a className='forgot-password' href='https://www.deepl.com/ja/translator'>パスワードをお忘れの方</a>
                     <input className='submit-btn' type="submit" value={isLoading ? "ログイン中..." : "ログイン"} disabled={isLoading} />
                 </form>
-                <img className='eye-img-login' src={showPassword ? eyeClose : eyeOpen} 
+                <img className='eye-img' src={showPassword ? eyeClose : eyeOpen} 
                     onClick={() => showPassword ? setShowPassword(false) : setShowPassword(true)} 
                     alt="eye-image" />
             </div>

@@ -10,8 +10,6 @@ import NewRegistration from './compornent/NewRegistration';
 import QuestionToAI from './compornent/QuestionToAI';
 import MemoPaper from './compornent/MemoPaper';
 import Calender from './compornent/Calender';
-import WeightGraph from './compornent/WeightGraph';
-import CalculateCalorie from './compornent/CalculateCalorie';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -119,31 +117,6 @@ function App() {
                         <Navigate to='/' />
                 }>
                 </Route>
-                <Route path='weight' element={
-                    isAuthenticated ? 
-                        <>
-                            <Header
-                             isAuthenticated={isAuthenticated}
-                             handleRemoveToken={handleRemoveToken}
-                            />
-                            <HealthCareMenu />
-                            <WeightGraph />
-                        </> :
-                        <Navigate to='/' />
-                }>
-                </Route>
-                <Route path='calorie' element={
-                    isAuthenticated ? 
-                        <>
-                            <Header
-                             isAuthenticated={isAuthenticated} 
-                             handleRemoveToken={handleRemoveToken}
-                            />
-                            <HealthCareMenu />
-                            <CalculateCalorie />
-                        </> :
-                        <Navigate to='/' />
-                }></Route>
             </Routes>
         </BrowserRouter>
     );
