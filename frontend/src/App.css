@@ -57,13 +57,17 @@ body {
     border-bottom: 1px solid #666666;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    li {
+    .calender-link,
+    .question-link {
+        text-decoration: none;
         list-style: none;
         font-weight: bolder;
         margin-bottom: 5px;
         text-align: center;
+        color: #000
     }
-    li:hover {
+    .calender-link:hover,
+    .question-link:hover {
         cursor: pointer;
         opacity: 0.5;
     }
@@ -74,13 +78,14 @@ body {
     border-bottom: 1px solid #666666;
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    li {
-        list-style: none;
+    .calender-link {
+        text-decoration: none;
         font-weight: bolder;
         margin-bottom: 5px;
         text-align: center;
+        color: #000
     }
-    li:hover {
+    .calender-link:hover {
         cursor: pointer;
         opacity: 0.5;
     }
@@ -206,6 +211,7 @@ body {
 }
 .back-calender {
     display: inline-block;
+    text-decoration: none;
     margin-top: 20px;
     color: #fa9f98;
     border-bottom: 1px solid #fa9f98;

@@ -1,13 +1,12 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Menu = () => {
-    const navigate = useNavigate();
     return (
         <>
             <ul className='menu'>
-                <li onClick={() => navigate('/calender')}>健康管理</li>
-                <li onClick={() => navigate('/question')}>AIへの質問</li>
+                <Link className='calender-link' to="/calender">健康管理</Link>
+                <Link className='question-link' to="/question">AIへの質問</Link>
             </ul>
         </>
     )

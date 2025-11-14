@@ -1,12 +1,11 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const HealthCareMenu = () => {
-    const navigate = useNavigate();
     return (
         <> 
             <ul className='health-care-menu'>
-                <li onClick={() => navigate('/calender')}>カレンダーと記録</li>
+                <Link className='calender-link' to="/calender">カレンダーと記録</Link>
             </ul>
         </>
     )

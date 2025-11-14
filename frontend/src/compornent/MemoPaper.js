@@ -1,9 +1,8 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function MemoPaper() {
-    const navigate = useNavigate();
     const { year, month, day } = useParams();
     const [meal, setMeal] = useState('');
     const [exercise, setExercise] = useState('');
@@ -91,7 +90,7 @@ function MemoPaper() {
 
     return (
         <>
-            <p className='back-calender' onClick={() => navigate('/calender')}>カレンダーに戻る</p>
+            <Link className='back-calender' to="/calender">カレンダーに戻る</Link>
             <p className='current-date'>{year}年{month}月{day}日</p>
             <div className='memo-paper'>
                 <div>
