@@ -10,6 +10,7 @@ import NewRegistration from './compornent/NewRegistration';
 import QuestionToAI from './compornent/QuestionToAI';
 import MemoPaper from './compornent/MemoPaper';
 import Calender from './compornent/Calender';
+import NotFoundPage from './compornent/NotFoundPage';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -115,6 +116,10 @@ function App() {
                             <Calender />
                         </> :
                         <Navigate to='/' />
+                }>
+                </Route>
+                <Route path='*' element={
+                    <NotFoundPage />
                 }>
                 </Route>
             </Routes>
