@@ -1,8 +1,6 @@
 /venv
 /datasets
 .env
-__pycache__
-sql_app.db
 
 # Pythonのコンパイル済みファイルなど
 __pycache__/
